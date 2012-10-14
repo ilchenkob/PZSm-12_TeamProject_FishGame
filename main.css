@@ -68,6 +68,10 @@ h3 {
     text-align:center;
 }
 
+#frame {
+    margin:0 50% 0 50%;
+}
+
 #scene {
     background-image: url(imgs/background.jpg);
     position:relative;
