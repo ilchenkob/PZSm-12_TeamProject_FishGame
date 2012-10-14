@@ -7,9 +7,13 @@ var Hero;
 var ArrEnemie;
 var hoveredCircle;
 
+var img1, img2, img3, img4, img5;
+
 //======================== constants ===========================
 var c_min_speed = 2;
 var c_max_speed = 7;
+var c_min_size = 1;
+var c_max_size = 5;
 //==============================================================
 
 // -------------------------------------------------------------
@@ -50,12 +54,22 @@ function drawHero(ctx, x, y, radius) {
 }
 
 function drawEnemies(ctx) {
-    var img = new Image();
-    img.src = 'imgs/enemie.png';
-    img.onload = function() {
-        for( var i = 0; i < 5; i++)
-            ctx.drawImage(img, 128 * iSprPos, 0, 128, 128, ArrEnemie[i].x, ArrEnemie[i].y - this.height/2, 128, 128);
-    };
+    for( var i = 0; i < 5; i++)
+    {
+            switch (ArrEnemie[i].size)
+            {
+                case 1: ctx.drawImage(img1, 128 * iSprPos, 0, 128, 128, ArrEnemie[i].x, ArrEnemie[i].y, 128, 128);
+                    break;
+                case 2: ctx.drawImage(img2, 154 * iSprPos, 0, 154, 154, ArrEnemie[i].x, ArrEnemie[i].y, 154, 154);
+                    break;
+                case 3: ctx.drawImage(img3, 179 * iSprPos, 0, 179, 179, ArrEnemie[i].x, ArrEnemie[i].y, 179, 179);
+                    break;
+                case 4: ctx.drawImage(img4, 205 * iSprPos, 0, 205, 205, ArrEnemie[i].x, ArrEnemie[i].y, 205, 205);
+                    break;
+                case 5: ctx.drawImage(img5, 230 * iSprPos, 0, 230, 230, ArrEnemie[i].x, ArrEnemie[i].y, 230, 230);
+                    break;
+            }
+    }
 }
 
 function drawScene() { // главная функция отрисовки
@@ -80,11 +94,15 @@ function drawScene() { // главная функция отрисовки
     for( var i = 0; i < 5; i++)
     {
         ArrEnemie[i].x -= ArrEnemie[i].speed;
-        if( ArrEnemie[i].x < -120 )
+        if( ArrEnemie[i].x < -230 )
         {
+            ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
             ArrEnemie[i].x = 800 + getRandomInt(0,400);
-            ArrEnemie[i].y = getRandomInt(60,420);
-            ArrEnemie[i].speed = getRandomInt(c_min_speed,c_max_speed);
+            ArrEnemie[i].y = getRandomInt(0, 416);
+            if (ArrEnemie[i].y > (480 - (128 * (1+((ArrEnemie[i].size * 0.2) - 0.2)))))
+            {
+                ArrEnemie[i].y -= 128 * (1+((ArrEnemie[i].size * 0.2) - 0.2));
+            }
         }
     }
 
@@ -106,19 +124,31 @@ $(function(){
     Hero = new Hero(160, 300, 15);
 
     ArrEnemie = [];
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(60,420), 15, getRandomInt(c_min_speed,c_max_speed)));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(60,420), 15, getRandomInt(c_min_speed,c_max_speed)));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(60,420), 15, getRandomInt(c_min_speed,c_max_speed)));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(60,420), 15, getRandomInt(c_min_speed,c_max_speed)));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(60,420), 15, getRandomInt(c_min_speed,c_max_speed)));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed)));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed)));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed)));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed)));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed)));
+
+    img1 = new Image();
+    img2 = new Image();
+    img3 = new Image();
+    img4 = new Image();
+    img5 = new Image();
+
+    img1.src = 'imgs/enemie.png';
+    img2.src = 'imgs/enemie2.png';
+    img3.src = 'imgs/enemie3.png';
+    img4.src = 'imgs/enemie4.png';
+    img5.src = 'imgs/enemie5.png';
 
     $('#scene').mousedown(function(e) {
         var canvasOffset = $(canvas).offset();
         var mouseX = Math.floor(e.pageX - canvasOffset.left);
         oldMouseY = Math.floor(e.pageY - canvasOffset.top);
-        if( mouseX < 250 ){
-            touched = true;
-        }
+
+        touched = true;
+
     });
 /*
     $('#scene').mousemove(function(e) {
