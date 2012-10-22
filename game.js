@@ -2,9 +2,9 @@ var canvas, ctx;
 var score_txt;
 var touched;
 var oldMouseY;
-var oldHeroY;
+//var oldHeroY;
 var iSprPos;
-var Hero;
+//var Hero;
 var ArrEnemie;
 
 var scores;
@@ -19,15 +19,17 @@ var c_min_speed = 2;
 var c_max_speed = 7;
 var c_min_size = 1;
 var c_max_size = 5;
+var c_hero_accel = 0.03;
 //==============================================================
 
 // -------------------------------------------------------------
-function Hero(x, y, size, speed, lifes){
+function Hero(x, y, size, speed, acc, lifes){
     this.x = x;
     this.y = y;
     this.size = size;
 	this.speed = speed;
     this.life_count = lifes;
+    this.accel = acc;
 }
 function Enemie(x, y, size, speed, active){
     this.x = x;
@@ -50,7 +52,7 @@ function clear() { // функция очищает canvas
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
 
-function drawHero(ctx, x, y, radius) {
+function drawHero(ctx, x, y) {
     var imgObj = new Image();
     imgObj.src = 'imgs/hero.png';
     imgObj.onload = function() {
@@ -133,14 +135,16 @@ function drawScene() { // главная функция отрисовки
 
         if( touched )
         {
-            Hero.y -= 6;
+            Hero.y -= (6 + Hero.accel);
             if( Hero.y < 50 ) Hero.y = 50;
         }
         else
         {
-            Hero.y += 4;
+            Hero.y += (4 + Hero.accel);
             if( Hero.y > 320 ) Hero.y = 320;
         }
+
+        Hero.accel += 0.25;
 
         for( var i = 0; i < 5; i++)
         {
@@ -181,7 +185,7 @@ function drawScene() { // главная функция отрисовки
         }
 
         drawEnemies(ctx);
-        drawHero(ctx, Hero.x, Hero.y, Hero.size);
+        drawHero(ctx, Hero.x, Hero.y);
 
         scores += Hero.speed/2;
 
@@ -207,11 +211,12 @@ $(function(){
     document.getElementById('game_over').style.visibility='hidden';
 	scores = 0;
     iSprPos = 0;
-    Hero = new Hero(160, //X
-                    300, //Y
-                    1,  //size
-                    1,   //speed
-                    3);  //lifes
+    Hero = new Hero(160,         //X
+                    300,         //Y
+                    1,           //size
+                    1,           //speed
+                    c_hero_accel,//acceleration
+                    3);          //lifes
 
     ArrEnemie = [];
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
@@ -237,6 +242,7 @@ $(function(){
         var mouseX = Math.floor(e.pageX - canvasOffset.left);
         oldMouseY = Math.floor(e.pageY - canvasOffset.top);
 
+        Hero.accel = c_hero_accel;
         touched = true;
 
     });
@@ -262,6 +268,7 @@ $(function(){
     $('#scene').mouseup(function(e)
     {
         oldMouseY = 0;
+        Hero.accel = c_hero_accel;
         touched = false;
     });
 
