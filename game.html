@@ -13,12 +13,16 @@
     <script type="text/javascript" src="Game.js"></script>
 </head>
 <body>
-<div class="container">
-    <canvas id="scene" width="800" height="480"></canvas>
-</div>
-
-<footer>
-    <h2>Fish game</h2>
-</footer>
+<table border="0">
+	<tr height="30" align="middle">
+		<td width="300" id="lifes">Our lifes</td>
+		<td width="200">Menu btn</td>
+		<td width="300" id="scores">Score: 0</td>
+	</tr>
+	<tr>
+        <div id="game_over">GAME OVER</div>
+		<td colspan="3"> <canvas id="scene" width="800" height="450"></canvas> </td>
+	</tr>
+</table>
 </body>
 </html>
