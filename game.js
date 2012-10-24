@@ -2,10 +2,9 @@ var canvas, ctx;
 var score_txt;
 var touched;
 var oldMouseY;
-//var oldHeroY;
 var iSprPos;
-//var Hero;
 var ArrEnemie;
+var ptrHero;
 
 var scores;
 var game_over;
@@ -14,12 +13,20 @@ var size_arr = [0, 128, 154, 179, 205, 230];
 
 var img1, img2, img3, img4, img5;
 
+var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
+
 //======================== constants ===========================
-var c_min_speed = 2;
-var c_max_speed = 7;
-var c_min_size = 1;
-var c_max_size = 5;
+var c_min_speed  = 2;
+var c_max_speed  = 7;
+var c_min_size   = 1;
+var c_max_size   = 5;
 var c_hero_accel = 0.03;
+
+//количество игровых очков для роста героя
+var c_give_level_2 = 45;
+var c_give_level_3 = 90;
+var c_give_level_4 = 150;
+var c_give_level_5 = 190;
 //==============================================================
 
 // -------------------------------------------------------------
@@ -46,28 +53,47 @@ function getRandomInt(min, max)
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// функции отрисовки :
-
+// функции отрисовки
 function clear() { // функция очищает canvas
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
 
-function drawHero(ctx, x, y) {
-    var imgObj = new Image();
-    imgObj.src = 'imgs/hero.png';
-    imgObj.onload = function() {
-        if( touched )
-            ctx.drawImage(imgObj, size_arr[Hero.size] * iSprPos, 0, size_arr[Hero.size], size_arr[Hero.size], x, y, size_arr[Hero.size], size_arr[Hero.size]);
-        else
-            ctx.drawImage(imgObj, 0, 0, size_arr[Hero.size], size_arr[Hero.size], x, y, size_arr[Hero.size], size_arr[Hero.size]);
-    };
-
-    //var point = new Image();
-    //point.src="imgs/results.png"
-    //ctx.drawImage(point, x, y);
+function DrawHeroFish( imgObj, x, y ) //рисует текстуру героя на нужном месте
+{
+    if( touched )
+        ctx.drawImage(imgObj, size_arr[ptrHero.size] * iSprPos, 0, size_arr[ptrHero.size], size_arr[ptrHero.size], x, y, size_arr[ptrHero.size], size_arr[ptrHero.size]);
+    else
+        ctx.drawImage(imgObj, 0, 0, size_arr[ptrHero.size], size_arr[ptrHero.size], x, y, size_arr[ptrHero.size], size_arr[ptrHero.size]);
 }
 
-function DrawEnemieFish( imageObj, num )
+function drawHero( x, y )   //определяет нужную текстуру для героя и вызывает ее рисование
+{
+    switch (ptrHero.size)
+    {
+        case 1:
+            DrawHeroFish( imgHero1, x ,y );
+            return;
+            brake;
+        case 2:
+            DrawHeroFish( imgHero2, x ,y );
+            return;
+            brake;
+        case 3:
+            DrawHeroFish( imgHero3, x ,y );
+            return;
+            brake;
+        case 4:
+            DrawHeroFish( imgHero4, x ,y );
+            return;
+            brake;
+        case 5:
+            DrawHeroFish( imgHero5, x ,y );
+            return;
+            brake;
+    }
+}
+
+function DrawEnemieFish( imageObj, num )  //рсиует текстуру врага на канвасе
 {
     ctx.drawImage(imageObj,
                   size_arr[ArrEnemie[num].size] * iSprPos,
@@ -81,10 +107,10 @@ function DrawEnemieFish( imageObj, num )
     );
 }
 
-function drawEnemies(ctx) {
+function drawEnemies(ctx) {     //разбирает где какого врага необходимо будет отобразить на канвасе
     for( var i = 0; i < 5; i++)
     {
-            switch (ArrEnemie[i].size)
+            switch (ArrEnemie[i].size) //взависимости от размера используем разные текстуры при рисовании
             {
                 case 1: DrawEnemieFish( img1, i );
                     break;
@@ -100,18 +126,18 @@ function drawEnemies(ctx) {
     }
 }
 
-function FindCollisions()
+function FindCollisions()  //поиск пересечений между текстурами Героя и остальных рыб
 {
     for(var i = 0; i < 5; i++)
     {
         if( ArrEnemie[i].x < 450 && ArrEnemie[i].isActive == true )
         {
-            if( Hero.x + size_arr[Hero.size] >= ArrEnemie[i].x
-                && Hero.x < ArrEnemie[i].x + size_arr[ArrEnemie[i].size] )
+            if( ptrHero.x + size_arr[ptrHero.size] >= ArrEnemie[i].x
+                && ptrHero.x < ArrEnemie[i].x + size_arr[ArrEnemie[i].size] )
             {
-                if( (Hero.y >= ArrEnemie[i].y && Hero.y <= ArrEnemie[i].y + size_arr[ArrEnemie[i].size])
+                if( (ptrHero.y >= ArrEnemie[i].y && ptrHero.y <= ArrEnemie[i].y + size_arr[ArrEnemie[i].size])
                     ||
-                    (Hero.y + size_arr[Hero.size] >= ArrEnemie[i].y && Hero.y + size_arr[Hero.size] <= ArrEnemie[i].y + size_arr[ArrEnemie[i].size])
+                    (ptrHero.y + size_arr[ptrHero.size] >= ArrEnemie[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrEnemie[i].y + size_arr[ArrEnemie[i].size])
                     )
                 {
                     return i;
@@ -128,27 +154,27 @@ function drawScene() { // главная функция отрисовки
     {
         clear(); // очистить canvas
 
-        iSprPos++;
+        iSprPos++;      //листание 4-х кадровых анимаций-текстур
         if (iSprPos >= 4) {
             iSprPos = 0;
         }
 
-        if( touched )
+        if( touched )   //герой либо тонет либо всплывает
         {
-            Hero.y -= (6 + Hero.accel);
-            if( Hero.y < 50 ) Hero.y = 50;
+            ptrHero.y -= (6 + ptrHero.accel);
+            if( ptrHero.y < 50 ) ptrHero.y = 50;
         }
         else
         {
-            Hero.y += (4 + Hero.accel);
-            if( Hero.y > 320 ) Hero.y = 320;
+            ptrHero.y += (4 + ptrHero.accel);
+            if( ptrHero.y > 320 ) ptrHero.y = 320;
         }
 
-        Hero.accel += 0.25;
+        ptrHero.accel += 0.25; //герой движеться с ускорением
 
-        for( var i = 0; i < 5; i++)
+        for( var i = 0; i < 5; i++) //передвигаем врагов на встречу
         {
-            ArrEnemie[i].x -= (ArrEnemie[i].speed + Hero.speed);
+            ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed);
             if( ArrEnemie[i].x < -230 )
             {
                 ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
@@ -163,14 +189,15 @@ function drawScene() { // главная функция отрисовки
         }
 
         var ind = FindCollisions();
-        if( ind >= 0 )
+        if( ind >= 0 )  //если есть пересечения героя с др. объектами
         {
             ArrEnemie[ind].isActive = false;
 
-            if( ArrEnemie[ind].size > Hero.size +2 )
+            if( ArrEnemie[ind].size > ptrHero.size )
             {
-                Hero.life_count--;
-                if( Hero.life_count == 0 )
+                ptrHero.life_count--;
+
+                if( ptrHero.life_count == 0 )
                 {
                     //Game Over
                     game_over = true;
@@ -182,15 +209,30 @@ function drawScene() { // главная функция отрисовки
                 scores += 50*ind;
                 ArrEnemie[ind].x = -400;
             }
-        }
+        };
 
+        //отображаем все на канвасе
         drawEnemies(ctx);
-        drawHero(ctx, Hero.x, Hero.y);
+        drawHero( ptrHero.x, ptrHero.y );
 
-        scores += Hero.speed/2;
-
+        //начисляем игровые очки и отображаем кол-во жизней
+        scores += ptrHero.speed/2;
         score_txt.innerText= "Score: " + Math.floor(scores);
-        document.getElementById("lifes").innerText = Hero.life_count;
+        document.getElementById("lifes").innerText = ptrHero.life_count;
+
+        //проверка на необходимость роста героя
+        if( scores >= c_give_level_2 && ptrHero.size < 2 )
+            ptrHero.size = 2;
+        else
+            if( scores >= c_give_level_3 && ptrHero.size < 3 )
+                ptrHero.size = 3;
+            else
+                if( scores >= c_give_level_4 && ptrHero.size < 4 )
+                    ptrHero.size = 4;
+                else
+                    if( scores >= c_give_level_5 && ptrHero.size < 5 )
+                        ptrHero.size = 5;
+
     } //if( !game_over )
 }
 
@@ -203,20 +245,16 @@ $(function(){
 	
 	score_txt = document.getElementById('scores');
 
-    var width = canvas.width;
-    var height = canvas.height;
-
-
     game_over = false;
     document.getElementById('game_over').style.visibility='hidden';
 	scores = 0;
     iSprPos = 0;
-    Hero = new Hero(160,         //X
-                    300,         //Y
-                    1,           //size
-                    1,           //speed
-                    c_hero_accel,//acceleration
-                    3);          //lifes
+    ptrHero = new Hero(160,         //X
+                       300,         //Y
+                       1,           //size
+                       1,           //speed
+                       c_hero_accel,//acceleration
+                       3);          //lifes
 
     ArrEnemie = [];
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
@@ -224,6 +262,18 @@ $(function(){
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+
+    imgHero1 = new Image();
+    imgHero2 = new Image();
+    imgHero3 = new Image();
+    imgHero4 = new Image();
+    imgHero5 = new Image();
+
+    imgHero1.src = 'imgs/hero.png';
+    imgHero2.src = 'imgs/enemie2.png';
+    imgHero3.src = 'imgs/enemie3.png';
+    imgHero4.src = 'imgs/enemie4.png';
+    imgHero5.src = 'imgs/enemie5.png';
 
     img1 = new Image();
     img2 = new Image();
@@ -242,33 +292,15 @@ $(function(){
         var mouseX = Math.floor(e.pageX - canvasOffset.left);
         oldMouseY = Math.floor(e.pageY - canvasOffset.top);
 
-        Hero.accel = c_hero_accel;
+        ptrHero.accel = c_hero_accel;
         touched = true;
 
     });
-/*
-    $('#scene').mousemove(function(e) {
-        if ( touched ) {
-            var canvasOffset = $(canvas).offset();
-            var mouseY = Math.floor(e.pageY - canvasOffset.top);
-            if( mouseY > 20 && mouseY < 460 ){
-                oldHeroY = Hero.y;
-                if( oldHeroY + ( mouseY - oldMouseY ) > 50 && oldHeroY + ( mouseY - oldMouseY ) < 410 ){
-                    Hero.y = oldHeroY + ( mouseY - oldMouseY );
-                    oldMouseY = mouseY;
-                }
-            }
-            else
-            {
-                touched = false;
-            }
-        }
-    });
-*/
+
     $('#scene').mouseup(function(e)
     {
         oldMouseY = 0;
-        Hero.accel = c_hero_accel;
+        ptrHero.accel = c_hero_accel;
         touched = false;
     });
 
