@@ -148,16 +148,41 @@ function FindCollisions()  //поиск пересечений между тек
     return -1;
 }
 
+function animateSprite()  //листание анимаций-текстур
+{
+	iSprPos++;      
+    if (iSprPos >= 4) 
+	{
+		iSprPos = 0;
+	}
+}
+
+function moveEnemies()  //передвигаем врагов на встречу
+{
+	for( var i = 0; i < 5; i++) 
+	{
+		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed);
+		if( ArrEnemie[i].x < -230 )
+		{
+			ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
+			ArrEnemie[i].x = 800 + getRandomInt(0,400);
+			ArrEnemie[i].y = getRandomInt(0, 416);
+			ArrEnemie[i].isActive = true;
+			if (ArrEnemie[i].y > (480 - (128 * (1+((ArrEnemie[i].size * 0.2) - 0.2)))))
+			{
+				ArrEnemie[i].y -= 128 * (1+((ArrEnemie[i].size * 0.2) - 0.2));
+			}
+		}
+	}
+}
+
 function drawScene() { // главная функция отрисовки
 
     if( !game_over )
     {
         clear(); // очистить canvas
 
-        iSprPos++;      //листание 4-х кадровых анимаций-текстур
-        if (iSprPos >= 4) {
-            iSprPos = 0;
-        }
+        animateSprite();
 
         if( touched )   //герой либо тонет либо всплывает
         {
@@ -172,21 +197,7 @@ function drawScene() { // главная функция отрисовки
 
         ptrHero.accel += 0.25; //герой движеться с ускорением
 
-        for( var i = 0; i < 5; i++) //передвигаем врагов на встречу
-        {
-            ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed);
-            if( ArrEnemie[i].x < -230 )
-            {
-                ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
-                ArrEnemie[i].x = 800 + getRandomInt(0,400);
-                ArrEnemie[i].y = getRandomInt(0, 416);
-                ArrEnemie[i].isActive = true;
-                if (ArrEnemie[i].y > (480 - (128 * (1+((ArrEnemie[i].size * 0.2) - 0.2)))))
-                {
-                    ArrEnemie[i].y -= 128 * (1+((ArrEnemie[i].size * 0.2) - 0.2));
-                }
-            }
-        }
+        moveEnemies();
 
         var ind = FindCollisions();
         if( ind >= 0 )  //если есть пересечения героя с др. объектами
@@ -237,10 +248,10 @@ function drawScene() { // главная функция отрисовки
 }
 
 // -------------------------------------------------------------
-
 // инициализация
-$(function(){
-    canvas = document.getElementById('scene');
+function Init()
+{
+	canvas = document.getElementById('scene');
     ctx = canvas.getContext('2d');
 	
 	score_txt = document.getElementById('scores');
@@ -286,6 +297,11 @@ $(function(){
     img3.src = 'imgs/enemie3.png';
     img4.src = 'imgs/enemie4.png';
     img5.src = 'imgs/enemie5.png';
+}
+
+$(function(){
+    
+	Init();
 
     $('#scene').mousedown(function(e) {
         var canvasOffset = $(canvas).offset();
@@ -304,5 +320,5 @@ $(function(){
         touched = false;
     });
 
-    setInterval(drawScene, 41); // скорость отрисовки
+    setInterval(drawScene, 41);
 });
