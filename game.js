@@ -147,15 +147,23 @@ function FindCollisions()  //поиск пересечений между тек
     {
         if( ArrEnemie[i].x < 450 && ArrEnemie[i].isActive == true )
         {
-            if( ptrHero.x + size_arr[ptrHero.size]*0.9 >= ArrEnemie[i].x + 0.2*size_arr[ArrEnemie[i].size] && ptrHero.x < ArrEnemie[i].x + size_arr[ArrEnemie[i].size] )
+            if( ptrHero.x + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].x + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.x + 0.125*size_arr[ptrHero.size] < ArrEnemie[i].x + 0.875*size_arr[ArrEnemie[i].size] )
             {
-                if( (ptrHero.y + 0.125*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                if (!(ptrHero.x + 0.75*size_arr[ptrHero.size] <= ArrEnemie[i].x + 0.75*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.75*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.75*size_arr[ArrEnemie[i].size])
                     ||
-                    (ptrHero.y + + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
-                    )
+                    !(ptrHero.x + 0.25*size_arr[ptrHero.size] <= ArrEnemie[i].x + 0.25*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.25*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.25*size_arr[ArrEnemie[i].size]))
                 {
-                    return i;
+                    if( (ptrHero.y + 0.125*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                        ||
+                        (ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                        ||
+                        (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                        )
+                    {
+                        return i;
+                    }
                 }
+
             }
         }
 
@@ -165,12 +173,14 @@ function FindCollisions()  //поиск пересечений между тек
     {
         if( ArrPlankton[i].x < 450 && ArrPlankton[i].isActive == true )
         {
-            if( ptrHero.x + size_arr[ptrHero.size] >= ArrPlankton[i].x
-                && ptrHero.x < ArrPlankton[i].x + 64 )
+            if( ptrHero.x + 0.875*size_arr[ptrHero.size] >= ArrPlankton[i].x + 0.125*64
+                && ptrHero.x + 0.125*size_arr[ptrHero.size] < ArrPlankton[i].x + 0.875*64 )
             {
-                if( (ptrHero.y >= ArrPlankton[i].y && ptrHero.y <= ArrEnemie[i].y + 64)
+                if( (ptrHero.y + 0.125*size_arr[ptrHero.size] >= ArrPlankton[i].y + 0.125*64 && ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrPlankton[i].y + 0.875*64)
                     ||
-                    (ptrHero.y + size_arr[ptrHero.size] >= ArrPlankton[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrPlankton[i].y + 64)
+                    (ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrPlankton[i].y + 0.125*64 && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrPlankton[i].y + 0.875*64)
+                    ||
+                    (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrPlankton[i].y + 0.125*64 && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrPlankton[i].y + 0.875*64)
                     )
                 {
                     return i+5;
@@ -242,12 +252,12 @@ function drawScene() { // главная функция отрисовки
         if( touched )   //герой либо тонет либо всплывает
         {
             ptrHero.y -= (6 + ptrHero.accel);
-            if( ptrHero.y < 0 ) ptrHero.y = 0;
+            if( ptrHero.y < 0 - 0.125*size_arr[ptrHero.size] ) ptrHero.y = 0 - 0.125*size_arr[ptrHero.size];
         }
         else
         {
             ptrHero.y += (4 + ptrHero.accel);
-            if( ptrHero.y > 330 ) ptrHero.y = 330;
+            if( ptrHero.y > 450 - 0.875*size_arr[ptrHero.size] ) ptrHero.y = 450 - 0.875*size_arr[ptrHero.size];
         }
 
         ptrHero.accel += 0.25; //герой движется с ускорением
