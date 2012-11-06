@@ -9,7 +9,7 @@ var ptrHero;
 var scores;
 var game_over;
 var paused;
-var size_arr = [0, 128, 154, 179, 205, 230];
+var size_arr = [0, 64, 77, 90, 104, 115];
 
 var img1, img2, img3, img4, img5, imgPlankton;
 
@@ -23,10 +23,10 @@ var c_max_size   = 5;
 var c_hero_accel = 0.03;
 
 //количество игровых очков для роста героя
-var c_give_level_2 = 450;
-var c_give_level_3 = 900;
-var c_give_level_4 = 1500;
-var c_give_level_5 = 3000;
+var c_give_level_2 = 45;
+var c_give_level_3 = 90;
+var c_give_level_4 = 150;
+var c_give_level_5 = 300;
 //==============================================================
 
 // -------------------------------------------------------------
@@ -115,7 +115,9 @@ function DrawEnemieFish( imageObj, num )  //рисует текстуру вра
 
 function DrawPlanktonFish( imageObj, num )  //рисует текстуру самого мелкого врага на канвасе
 {
-    ctx.drawImage(imageObj, 64 * iSprPos, 0, 64, 64, ArrPlankton[num].x, ArrPlankton[num].y, 64, 64);
+    return;
+    //ctx.drawImage(imageObj, 50 * iSprPos, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
+    ctx.drawImage(imageObj, 0, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
 }
 
 function drawEnemies(ctx) {     //разбирает где какого врага необходимо будет отобразить на канвасе
@@ -135,6 +137,7 @@ function drawEnemies(ctx) {     //разбирает где какого вра�
                     break;
             }
     }
+
     for( var i = 0; i < 6; i++)
     {
         DrawPlanktonFish( imgPlankton, i);
@@ -247,7 +250,7 @@ function drawScene() { // главная функция отрисовки
         else
         {
             ptrHero.y += (4 + ptrHero.accel);
-            if( ptrHero.y > 330 ) ptrHero.y = 330;
+            if( ptrHero.y > 450 - size_arr[ptrHero.size] ) ptrHero.y = 450 - size_arr[ptrHero.size];
         }
 
         ptrHero.accel += 0.25; //герой движется с ускорением
@@ -267,7 +270,7 @@ function drawScene() { // главная функция отрисовки
             else {
                 ArrEnemie[ind].isActive = false;
 
-                if( ArrEnemie[ind].size > ptrHero.size )
+                if( ArrEnemie[ind].size >= ptrHero.size )
                 {
                     ptrHero.life_count--;
 
