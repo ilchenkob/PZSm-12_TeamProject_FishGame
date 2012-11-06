@@ -147,7 +147,7 @@ function FindCollisions()  //поиск пересечений между тек
     {
         if( ArrEnemie[i].x < 450 && ArrEnemie[i].isActive == true )
         {
-            if( ptrHero.x + size_arr[ptrHero.size]*0.9 >= ArrEnemie[i].x && ptrHero.x < ArrEnemie[i].x + size_arr[ArrEnemie[i].size] )
+            if( ptrHero.x + size_arr[ptrHero.size]*0.9 >= ArrEnemie[i].x + 0.2*size_arr[ArrEnemie[i].size] && ptrHero.x < ArrEnemie[i].x + size_arr[ArrEnemie[i].size] )
             {
                 if( (ptrHero.y + 0.125*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     ||
