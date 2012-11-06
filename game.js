@@ -16,8 +16,8 @@ var img1, img2, img3, img4, img5, imgPlankton;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
 
 //======================== constants ===========================
-var c_min_speed  = 2;
-var c_max_speed  = 7;
+var c_min_speed  = 3;
+var c_max_speed  = 8;
 var c_min_size   = 1;
 var c_max_size   = 5;
 var c_hero_accel = 0.03;
@@ -244,19 +244,19 @@ function drawScene() { // главная функция отрисовки
 
         if( touched )   //герой либо тонет либо всплывает
         {
-            ptrHero.y -= (6 + ptrHero.accel);
+            ptrHero.y -= (10 + ptrHero.accel);
             if( ptrHero.y < 0 ) ptrHero.y = 0;
         }
         else
         {
-            ptrHero.y += (4 + ptrHero.accel);
+            ptrHero.y += (6 + ptrHero.accel);
             if( ptrHero.y > 450 - size_arr[ptrHero.size] ) ptrHero.y = 450 - size_arr[ptrHero.size];
         }
 
         ptrHero.accel += 0.25; //герой движется с ускорением
 
         moveEnemies();
-        movePlankton();
+        //movePlankton();
 
         var ind = FindCollisions();
         if( ind >= 0 )  //если есть пересечения героя с др. объектами
