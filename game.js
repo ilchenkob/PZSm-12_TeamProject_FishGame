@@ -276,6 +276,10 @@ function drawScene() { // главная функция отрисовки
                         //Game Over
                         game_over = true;
                         document.getElementById('game_over').style.visibility='visible';
+                        document.getElementById('txt_2').style.visibility='visible';
+                        document.getElementById('txt_3').style.visibility='visible';
+                        document.getElementById('btn_2').style.visibility='visible';
+                        document.getElementById('btn_3').style.visibility='visible';
                     }
                 }
                 else
