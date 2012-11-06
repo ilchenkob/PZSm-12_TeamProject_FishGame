@@ -9,24 +9,24 @@ var ptrHero;
 var scores;
 var game_over;
 var paused;
-var size_arr = [0, 128, 154, 179, 205, 230];
+var size_arr = [0, 64, 77, 90, 104, 115];
 
 var img1, img2, img3, img4, img5, imgPlankton;
 
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
 
 //======================== constants ===========================
-var c_min_speed  = 2;
-var c_max_speed  = 7;
+var c_min_speed  = 3;
+var c_max_speed  = 8;
 var c_min_size   = 1;
 var c_max_size   = 5;
 var c_hero_accel = 0.03;
 
 //количество игровых очков для роста героя
-var c_give_level_2 = 450;
-var c_give_level_3 = 900;
-var c_give_level_4 = 1500;
-var c_give_level_5 = 3000;
+var c_give_level_2 = 45;
+var c_give_level_3 = 90;
+var c_give_level_4 = 150;
+var c_give_level_5 = 300;
 //==============================================================
 
 // -------------------------------------------------------------
@@ -115,7 +115,9 @@ function DrawEnemieFish( imageObj, num )  //рисует текстуру вра
 
 function DrawPlanktonFish( imageObj, num )  //рисует текстуру самого мелкого врага на канвасе
 {
-    ctx.drawImage(imageObj, 64 * iSprPos, 0, 64, 64, ArrPlankton[num].x, ArrPlankton[num].y, 64, 64);
+    return;
+    //ctx.drawImage(imageObj, 50 * iSprPos, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
+    ctx.drawImage(imageObj, 0, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
 }
 
 function drawEnemies(ctx) {     //разбирает где какого врага необходимо будет отобразить на канвасе
@@ -135,6 +137,7 @@ function drawEnemies(ctx) {     //разбирает где какого вра�
                     break;
             }
     }
+
     for( var i = 0; i < 6; i++)
     {
         DrawPlanktonFish( imgPlankton, i);
@@ -251,6 +254,7 @@ function drawScene() { // главная функция отрисовки
 
         if( touched )   //герой либо тонет либо всплывает
         {
+<<<<<<< HEAD
             ptrHero.y -= (6 + ptrHero.accel);
             if( ptrHero.y < 0 - 0.125*size_arr[ptrHero.size] ) ptrHero.y = 0 - 0.125*size_arr[ptrHero.size];
         }
@@ -258,12 +262,21 @@ function drawScene() { // главная функция отрисовки
         {
             ptrHero.y += (4 + ptrHero.accel);
             if( ptrHero.y > 450 - 0.875*size_arr[ptrHero.size] ) ptrHero.y = 450 - 0.875*size_arr[ptrHero.size];
+=======
+            ptrHero.y -= (10 + ptrHero.accel);
+            if( ptrHero.y < 0 ) ptrHero.y = 0;
+        }
+        else
+        {
+            ptrHero.y += (6 + ptrHero.accel);
+            if( ptrHero.y > 450 - size_arr[ptrHero.size] ) ptrHero.y = 450 - size_arr[ptrHero.size];
+>>>>>>> 52245bf1afba12d2ec008863a82b26413e535518
         }
 
         ptrHero.accel += 0.25; //герой движется с ускорением
 
         moveEnemies();
-        movePlankton();
+        //movePlankton();
 
         var ind = FindCollisions();
         if( ind >= 0 )  //если есть пересечения героя с др. объектами
@@ -277,7 +290,7 @@ function drawScene() { // главная функция отрисовки
             else {
                 ArrEnemie[ind].isActive = false;
 
-                if( ArrEnemie[ind].size > ptrHero.size )
+                if( ArrEnemie[ind].size >= ptrHero.size )
                 {
                     ptrHero.life_count--;
 
@@ -286,6 +299,10 @@ function drawScene() { // главная функция отрисовки
                         //Game Over
                         game_over = true;
                         document.getElementById('game_over').style.visibility='visible';
+                        document.getElementById('txt_2').style.visibility='visible';
+                        document.getElementById('txt_3').style.visibility='visible';
+                        document.getElementById('btn_2').style.visibility='visible';
+                        document.getElementById('btn_3').style.visibility='visible';
                     }
                 }
                 else
