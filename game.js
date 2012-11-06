@@ -8,7 +8,7 @@ var ptrHero;
 
 var scores;
 var game_over;
-
+var paused;
 var size_arr = [0, 128, 154, 179, 205, 230];
 
 var img1, img2, img3, img4, img5, imgPlankton;
@@ -230,6 +230,9 @@ function movePlankton()  //передвигаем планктон на встр
 
 function drawScene() { // главная функция отрисовки
 
+    if( paused )
+        return;
+
     if( !game_over )
     {
         clear(); // очистить canvas
@@ -291,7 +294,7 @@ function drawScene() { // главная функция отрисовки
         //начисляем игровые очки и отображаем кол-во жизней
         scores += ptrHero.speed/2;
         score_txt.innerText= "Score: " + Math.floor(scores);
-        document.getElementById("lifes").innerText = ptrHero.life_count;
+        document.getElementById("lifes").innerText = "Lifes: " + ptrHero.life_count;
 
         //проверка на необходимость роста героя
         if( scores >= c_give_level_2 && ptrHero.size < 2 )
@@ -319,7 +322,9 @@ function Init()
 	score_txt = document.getElementById('scores');
 
     game_over = false;
-    document.getElementById('game_over').style.visibility='hidden';
+    paused = false;
+    HideButtons();
+
 	scores = 0;
     iSprPos = 0;
     ptrHero = new Hero(100,         //X
@@ -372,6 +377,58 @@ function Init()
     imgPlankton = new Image();
 
     imgPlankton.src = 'imgs/plankton.png';
+}
+
+function HideButtons()
+{
+    document.getElementById('game_over').style.visibility='hidden';
+    document.getElementById('txt_1').style.visibility='hidden';
+    document.getElementById('txt_2').style.visibility='hidden';
+    document.getElementById('txt_3').style.visibility='hidden';
+    document.getElementById('btn_1').style.visibility='hidden';
+    document.getElementById('btn_2').style.visibility='hidden';
+    document.getElementById('btn_3').style.visibility='hidden';
+}
+
+function ShowButtons()
+{
+    document.getElementById('txt_1').style.visibility='visible';
+    document.getElementById('txt_2').style.visibility='visible';
+    document.getElementById('txt_3').style.visibility='visible';
+    document.getElementById('btn_1').style.visibility='visible';
+    document.getElementById('btn_2').style.visibility='visible';
+    document.getElementById('btn_3').style.visibility='visible';
+}
+
+function onPauseClick()
+{
+    if( !paused )
+    {
+        paused = true;
+        ShowButtons();
+    }
+    else
+    {
+        HideButtons();
+        paused = false;
+    }
+}
+
+function onResumeClick()
+{
+    HideButtons();
+    paused = false;
+}
+
+function onToMenuClick()
+{
+    document.location.href = "index.html";
+}
+
+function onReplayClick()
+{
+    //document.location.reload();
+    Init();
 }
 
 $(function(){

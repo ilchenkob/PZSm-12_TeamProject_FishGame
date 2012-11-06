@@ -1,74 +1,94 @@
+@font-face {
+    font-family: Veronica; /* имя шрифта для CSS правил */
+    src: local("Veronica"), /* проверяем наличие шрифта в ОС пользователя */
+         url('fonts/Veronica.ttf'); /* если шрифт не установлен, тогда загружаем его по указанному пути */
+  }
+  
+@font-face {
+    font-family: Rabbit; /* имя шрифта для CSS правил */
+    src: local("Rabbit"), /* проверяем наличие шрифта в ОС пользователя */
+         url('fonts/Rabbit.ttf'); /* если шрифт не установлен, тогда загружаем его по указанному пути */
+  }
+
+
 body {
- background-image:url(imgs/2.jpg);
- background-position:left 1px;
-background-repeat:no-repeat;
-background-size: 800px 480px;
-
+	background-image:url(imgs/menu_back.jpg);
+	background-position:left 1px;
+	background-repeat:no-repeat;
+	background-size: 800px 480px;
 }
+
+a {
+	display:block; /*Блок*/
+	width:230px;
+	height:70px;
+	display:block;    /* Делаем ссылку блоком */
+	position: absolute; 
+	left: 292px; 
+}
+
 a.button {
+	background:url(imgs/play.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
+	background-size: 64px 64px;
+	top: 195px;
+	text-indent:-999em; /*убираем текстовую ссылку*/
 	
-       display:block; /*Блок*/
-       width:600px; /*Высота*/
-       height:120px; /*Ширина*/
-       background:url(imgs/play.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
-background-size: 100px 100px;
-display:block;    /* Делаем ссылку блоком */
-
-
-position: absolute; 
-left: 210px; 
-top: 200px;
- 
-       text-indent:-999em; /*убираем текстовую ссылку*/
+	box-shadow:
+	inset #0072a3 0 0 6px 1px,
+	#0072a3 0 0 24px 15px;
 }
 a.button1 {
+	background:url(imgs/rec.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
+	background-size: 64px 64px;
+	top: 305px;
+	text-indent:-999em; /*убираем текстовую ссылку*/
 	
-       display:block; /*Блок*/
-       width:600px; /*Высота*/
-       height:120px; /*Ширина*/
-       background:url(imgs/rec.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
-background-size: 120px 120px;
-display:block;    /* Делаем ссылку блоком */
-
-position: absolute; 
-left: 200px; 
-top: 320px;
- 
-       text-indent:-999em; /*убираем текстовую ссылку*/
+	box-shadow:
+	inset #016590 0 0 6px 1px,
+	#016590 0 0 24px 15px;
 }
+
 h.text1 {
-        font-size: 80px;
+	font-size: 80px;
 	line-height: 140px;
-	font-family: Jokerman;
+	font-family: Veronica;
 	font-weight: bolder;
-	text-align: center;
+	text-align: center;	
+	position: absolute; 
+	left: 135px;
 	
-position: absolute; 
-left: 180px;
+	text-shadow: #0299da 5px 0 0px, #4fa1da 0 1px 0px, #0299da -5px 0 0px, #4fa1da 0 -1px 0px;
 } 
 .text1 {color: #00008B;}
+
 h.text2 {
-        font-size: 30px;
-	line-height: 500px;
-	font-family: Jokerman;
+    font-size: 30px;
+	letter-spacing: 4 px;
+	font-family: Rabbit;
 	font-weight: bolder;
 	text-align: center;
+	position: absolute; 
+	left: 365px;
+	top: 214px;
 	
-position: absolute; 
-left: 320px;
+	text-shadow: #ddd 1px 0 0px, #ddd 0 1px 0px, #ddd -1px 0 0px, #ddd 0 -1px 0px;
 } 
-.text2 {color: #0000FF;}
+.text2 {color: #0072a3;}
+
 h.text3 {
-        font-size: 30px;
-	line-height: 730px;
-	font-family: Jokerman;
+	font-size: 30px;
+	font-family: Rabbit;
 	font-weight: bolder;
+	letter-spacing: 3 px;
 	text-align: center;
+	position: absolute; 
+	left: 365px;
+	top: 326px;
 	
-position: absolute; 
-left: 320px;
+	text-shadow: #ddd 1px 0 0px, #ddd 0 1px 0px, #ddd -1px 0 0px, #ddd 0 -1px 0px;
 } 
-.text3 {color: #0000FF;}
+.text3 {color: #01587d;}
+
 table {
   margin-left: -4%;
   font-family: sans-serif;
@@ -84,29 +104,25 @@ td, th {
 padding:25px; /* Внутренний отступ */
 background-color:#478CFB;    /* Фон */
 color:#fff;        /* Цвет */
-font:18pt 'Patua One', cursive;    /* Размер, семейство шрифта */
+font:18pt 'Arial', cursive;    /* Размер, семейство шрифта */
 }
 /*кнопка и текст на странице рекордов*/
 a.button2 {
-	
-       display:block; /*Блок*/
-       width:100px; /*Высота*/
-       height:100px; /*Ширина*/
-       background:url(imgs/play.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
-background-size: 90px 90px;
-display:block;    /* Делаем ссылку блоком */
-
-
-position: absolute; 
-left: 600px; 
-top: 250px;
- 
-       text-indent:-999em; /*убираем текстовую ссылку*/
+	display:block; /*Блок*/
+	width:72px; /*Высота*/
+	height:72px; /*Ширина*/
+	background:url(imgs/back.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/  
+	background-size: 64px 64px;
+	display:block;    /* Делаем ссылку блоком */
+	position: absolute; 
+	left: 40px; 
+	top: 27px;
+	text-indent:-999em; /*убираем текстовую ссылку*/
 }
 h.text4 {
         font-size: 30px;
 	line-height: 160px;
-	font-family: 'Patua One', cursive;
+	font-family: 'Arial', cursive;
 	font-weight: bolder;
 	text-align: center;
 	
