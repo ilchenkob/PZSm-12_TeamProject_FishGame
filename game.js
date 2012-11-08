@@ -12,21 +12,39 @@ var paused;
 var size_arr = [0, 64, 77, 90, 104, 115];
 
 var img1, img2, img3, img4, img5, imgPlankton;
-
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
 
+//=======================background imgs========================
+var back_1, back_2;
+var backImg_1;
+function FarBack(x)
+{
+    this.x = x;
+}
+
+var back_3, back_4;
+var backImg_2;
+function NearBack(x)
+{
+    this.x = x;
+}
+//==============================================================
+
 //======================== constants ===========================
-var c_min_speed  = 3;
+var c_min_speed  = 4;
 var c_max_speed  = 8;
 var c_min_size   = 1;
 var c_max_size   = 5;
 var c_hero_accel = 0.03;
 
+var c_far_back_speed = 1.8;
+var c_near_back_speed = 3;
+
 //количество игровых очков для роста героя
-var c_give_level_2 = 45;
-var c_give_level_3 = 90;
-var c_give_level_4 = 150;
-var c_give_level_5 = 300;
+var c_give_level_2 = 90;
+var c_give_level_3 = 150;
+var c_give_level_4 = 250;
+var c_give_level_5 = 400;
 //==============================================================
 
 // -------------------------------------------------------------
@@ -235,6 +253,34 @@ function movePlankton()  //передвигаем планктон на встр
     }
 }
 
+function drawBack()
+{
+    //Far background
+    ctx.drawImage(backImg_1,back_1.x,0);
+    ctx.drawImage(backImg_1,back_2.x,0);
+
+    back_1.x -= (c_far_back_speed + ptrHero.accel/10);
+    back_2.x -= (c_far_back_speed + ptrHero.accel/10);
+
+    if( back_1.x <= -800 )
+        back_1.x = back_2.x + 800;
+    if( back_2.x <= -800 )
+        back_2.x = back_1.x + 800;
+
+    //Near background
+    ctx.drawImage(backImg_2,back_3.x,0);
+    ctx.drawImage(backImg_2,back_4.x,0);
+
+    back_3.x -= (c_near_back_speed + ptrHero.accel/10);
+    back_4.x -= (c_near_back_speed + ptrHero.accel/10);
+
+    if( back_3.x <= -1600 )
+        back_3.x = back_4.x + 1600;
+    if( back_4.x <= -1600 )
+        back_4.x = back_3.x + 1600;
+}
+
+
 function drawScene() { // главная функция отрисовки
 
     if( paused )
@@ -245,6 +291,7 @@ function drawScene() { // главная функция отрисовки
         clear(); // очистить canvas
 
         animateSprite();
+        drawBack();
 
         if( touched )   //герой либо тонет либо всплывает
         {
@@ -257,7 +304,7 @@ function drawScene() { // главная функция отрисовки
             if( ptrHero.y > 450 - size_arr[ptrHero.size] ) ptrHero.y = 450 - size_arr[ptrHero.size];
         }
 
-        ptrHero.accel += 0.25; //герой движется с ускорением
+        //ptrHero.accel += 0.1; //герой движется с ускорением
 
         moveEnemies();
         //movePlankton();
@@ -265,6 +312,7 @@ function drawScene() { // главная функция отрисовки
         var ind = FindCollisions();
         if( ind >= 0 )  //если есть пересечения героя с др. объектами
         {
+            ptrHero.accel = c_hero_accel;
             if (ind >4)
             {
                 ArrPlankton[ind-5].isActive = false;
@@ -388,6 +436,19 @@ function Init()
     imgPlankton = new Image();
 
     imgPlankton.src = 'imgs/plankton.png';
+
+    backImg_1 = new Image();
+    backImg_1.src = 'imgs/back_1.png';
+
+    back_1 = new FarBack(0);
+    back_2 = new FarBack(800);
+
+    backImg_2 = new Image();
+    backImg_2.src = 'imgs/back_2.png';
+
+    back_3 = new FarBack(0);
+    back_4 = new FarBack(1600);
+
 }
 
 function HideButtons()
@@ -450,8 +511,6 @@ $(function(){
         var canvasOffset = $(canvas).offset();
         var mouseX = Math.floor(e.pageX - canvasOffset.left);
         oldMouseY = Math.floor(e.pageY - canvasOffset.top);
-
-        ptrHero.accel = c_hero_accel;
         touched = true;
 
     });
