@@ -154,7 +154,9 @@ function FindCollisions()  //поиск пересечений между тек
             {
                 if( (ptrHero.y + 0.125*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     ||
-                    (ptrHero.y + + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                    (ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                    ||
+                    (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     )
                 {
                     return i;
@@ -169,11 +171,13 @@ function FindCollisions()  //поиск пересечений между тек
         if( ArrPlankton[i].x < 450 && ArrPlankton[i].isActive == true )
         {
             if( ptrHero.x + size_arr[ptrHero.size] >= ArrPlankton[i].x
-                && ptrHero.x < ArrPlankton[i].x + 64 )
+                && ptrHero.x < ArrPlankton[i].x + 50 )
             {
-                if( (ptrHero.y >= ArrPlankton[i].y && ptrHero.y <= ArrEnemie[i].y + 64)
+                if( (ptrHero.y >= ArrPlankton[i].y && ptrHero.y <= ArrEnemie[i].y + 50)
                     ||
-                    (ptrHero.y + size_arr[ptrHero.size] >= ArrPlankton[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrPlankton[i].y + 64)
+                    (ptrHero.y + size_arr[ptrHero.size] >= ArrPlankton[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrPlankton[i].y + 50)
+                    ||
+                    (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.125*50 && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrPlankton[i].y + 0.875*50)
                     )
                 {
                     return i+5;
@@ -221,11 +225,11 @@ function movePlankton()  //передвигаем планктон на встр
         if( ArrPlankton[i].x < -230 )
         {
             ArrPlankton[i].x = 800 + getRandomInt(0,400);
-            ArrPlankton[i].y = getRandomInt(0, 416);
+            ArrPlankton[i].y = getRandomInt(0, 430);
             ArrPlankton[i].isActive = true;
-            if (ArrPlankton[i].y > (480 -64))
+            if (ArrPlankton[i].y > (480 - 50))
             {
-                ArrPlankton[i].y -= 64;
+                ArrPlankton[i].y -= 50;
             }
         }
     }
