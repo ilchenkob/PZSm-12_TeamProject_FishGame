@@ -5,6 +5,7 @@ var oldMouseY;
 var iSprPos;
 var ArrEnemie;
 var ptrHero;
+var ptrRod;
 
 var scores;
 var game_over;
@@ -35,10 +36,15 @@ var c_min_speed  = 4;
 var c_max_speed  = 8;
 var c_min_size   = 1;
 var c_max_size   = 5;
-var c_hero_accel = 0.03;
+var c_hero_accel = 0.04;
 
 var c_far_back_speed = 1.8;
 var c_near_back_speed = 3;
+
+var c_rod_x_speed = 3;
+var c_rod_y_speed = 15;
+var c_rod_random_min = 700;
+var c_rod_random_max = 900;
 
 //количество игровых очков для роста героя
 var c_give_level_2 = 90;
@@ -68,6 +74,15 @@ function Plankton(x, y, speed, active){
     this.y = y;
     this.speed = speed;
     this.isActive = active;
+}
+
+function FishRod(_x, _y, _up, _active)
+{
+    this.x = _x;
+    this.y = _y;
+    this.up = _up;
+    this.active = _active;
+    this.img = new Image();
 }
 // -------------------------------------------------------------
 
@@ -215,7 +230,7 @@ function moveEnemies()  //передвигаем врагов на встреч�
 {
 	for( var i = 0; i < 5; i++)
 	{
-		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed);
+		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed + ptrHero.size/4);
 		if( ArrEnemie[i].x < -230 )
 		{
 			ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
@@ -255,8 +270,8 @@ function drawBack()
     ctx.drawImage(backImg_1,back_1.x,0);
     ctx.drawImage(backImg_1,back_2.x,0);
 
-    back_1.x -= (c_far_back_speed + ptrHero.accel/10);
-    back_2.x -= (c_far_back_speed + ptrHero.accel/10);
+    back_1.x -= (c_far_back_speed + ptrHero.accel/10 + ptrHero.size/4);
+    back_2.x -= (c_far_back_speed + ptrHero.accel/10 + ptrHero.size/4);
 
     if( back_1.x <= -800 )
         back_1.x = back_2.x + 800;
@@ -267,8 +282,8 @@ function drawBack()
     ctx.drawImage(backImg_2,back_3.x,0);
     ctx.drawImage(backImg_2,back_4.x,0);
 
-    back_3.x -= (c_near_back_speed + ptrHero.accel/10);
-    back_4.x -= (c_near_back_speed + ptrHero.accel/10);
+    back_3.x -= (c_near_back_speed + ptrHero.accel/10 + ptrHero.size/4);
+    back_4.x -= (c_near_back_speed + ptrHero.accel/10 + ptrHero.size/4);
 
     if( back_3.x <= -1600 )
         back_3.x = back_4.x + 1600;
@@ -276,6 +291,50 @@ function drawBack()
         back_4.x = back_3.x + 1600;
 }
 
+function moveFishRod()
+{
+    ptrRod.x -= c_rod_x_speed;
+
+    if( ptrRod.x < c_rod_x_speed )
+    {
+        ptrRod.x = getRandomInt(c_rod_random_min, c_rod_random_max);
+        ptrRod.y = -250;
+        ptrRod.up = false;
+        ptrRod.active = true;
+        return;
+    }
+    if( ptrRod.x < 230 )
+    {
+        if( ptrRod.up == false && ptrRod.y < 0 )
+        {
+            ptrRod.y += c_rod_y_speed;
+        }
+        else
+        {
+            ptrRod.up = true;
+        }
+        if( ptrRod.up )
+            ptrRod.y -= c_rod_y_speed * 2;
+    }
+
+    ctx.drawImage(ptrRod.img, ptrRod.x, ptrRod.y, ptrRod.img.width, ptrRod.img.height);
+}
+
+function rindRodCollisions()
+{
+    if( !ptrRod.active )
+        return;
+
+    if( ptrRod.x <= ptrHero.x + size_arr[ptrHero.size]*0.9 )
+    {
+        //if( ptrHero.y + size_arr[ptrHero.size]*0.9 <= ptrRod.y + ptrRod.img.height )
+        if( ptrRod.y + ptrRod.img.height - ptrHero.y < 130 )
+        {
+            ptrHero.life_count--;
+            ptrRod.active = false;
+        }
+    }
+}
 
 function drawScene() { // главная функция отрисовки
 
@@ -291,12 +350,12 @@ function drawScene() { // главная функция отрисовки
 
         if( touched )   //герой либо тонет либо всплывает
         {
-            ptrHero.y -= (10 + ptrHero.accel);
+            ptrHero.y -= (14 + ptrHero.accel);
             if( ptrHero.y < 0 ) ptrHero.y = 0;
         }
         else
         {
-            ptrHero.y += (6 + ptrHero.accel);
+            ptrHero.y += (8 + ptrHero.accel);
             if( ptrHero.y > 450 - size_arr[ptrHero.size] ) ptrHero.y = 450 - size_arr[ptrHero.size];
         }
 
@@ -304,6 +363,9 @@ function drawScene() { // главная функция отрисовки
 
         moveEnemies();
         //movePlankton();
+
+        moveFishRod();
+        rindRodCollisions();
 
         var ind = FindCollisions();
         if( ind >= 0 )  //если есть пересечения героя с др. объектами
@@ -321,17 +383,6 @@ function drawScene() { // главная функция отрисовки
                 if( ArrEnemie[ind].size >= ptrHero.size )
                 {
                     ptrHero.life_count--;
-
-                    if( ptrHero.life_count == 0 )
-                    {
-                        //Game Over
-                        game_over = true;
-                        document.getElementById('game_over').style.visibility='visible';
-                        document.getElementById('txt_2').style.visibility='visible';
-                        document.getElementById('txt_3').style.visibility='visible';
-                        document.getElementById('btn_2').style.visibility='visible';
-                        document.getElementById('btn_3').style.visibility='visible';
-                    }
                 }
                 else
                 {
@@ -341,6 +392,17 @@ function drawScene() { // главная функция отрисовки
             }
 
         };
+
+        if( ptrHero.life_count == 0 )
+        {
+            //Game Over
+            game_over = true;
+            document.getElementById('game_over').style.visibility='visible';
+            document.getElementById('txt_2').style.visibility='visible';
+            document.getElementById('txt_3').style.visibility='visible';
+            document.getElementById('btn_2').style.visibility='visible';
+            document.getElementById('btn_3').style.visibility='visible';
+        }
 
         //отображаем все на канвасе
         drawEnemies(ctx);
@@ -388,6 +450,9 @@ function Init()
                        1,           //speed
                        c_hero_accel,//acceleration
                        3);          //lifes
+
+    ptrRod = new FishRod( getRandomInt(c_rod_random_min,c_rod_random_max), -250, false, true);
+    ptrRod.img.src = 'imgs/rod.png';
 
     ArrEnemie = [];
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
@@ -470,15 +535,18 @@ function ShowButtons()
 
 function onPauseClick()
 {
-    if( !paused )
+    if( !game_over )
     {
-        paused = true;
-        ShowButtons();
-    }
-    else
-    {
-        HideButtons();
-        paused = false;
+        if( !paused )
+        {
+            paused = true;
+            ShowButtons();
+        }
+        else
+        {
+            HideButtons();
+            paused = false;
+        }
     }
 }
 
