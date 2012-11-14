@@ -6,6 +6,7 @@ var iSprPos;
 var ArrEnemie;
 var ptrHero;
 var anch;
+var prevAnchScore;
 
 var scores;
 var game_over;
@@ -221,15 +222,15 @@ function FindCollisions()  //поиск пересечений между тек
     }
     if (anch.x < 450)
     {
-        if (anch.active)
+        if (anch.active == true)
         {
             if (ptrHero.x + size_arr[ptrHero.size] >= anch.x
                 && ptrHero.x < anch.x + 76 )
             {
                   if (ptrHero.y + 0.875*size_arr[ptrHero.size] >= anch.y)
                 {
-                    return 100;
                     anch.active = false;
+                    return 100;
                 }
             }
         }
@@ -269,10 +270,12 @@ function moveEnemies()  //передвигаем врагов на встреч�
 function moveAnchor()
 {
     anch.x -= anch.speed;
+
     if (anch.x < -200)
     {
-        anch.x = 1000;
+        anch.start = false;
         anch.active = true;
+        anch.x = 1000;
     }
 
 }
@@ -349,6 +352,10 @@ function drawScene() { // главная функция отрисовки
         //ptrHero.accel += 0.1; //герой движется с ускорением
 
         moveEnemies();
+        if (scores == prevAnchScore + getRandomInt(300, 500)*ptrHero.size)
+        {
+            anch.start = true;
+        }
         if (anch.start)
         {
             moveAnchor();
@@ -440,7 +447,7 @@ function Init()
     ctx = canvas.getContext('2d');
 
 	score_txt = document.getElementById('scores');
-
+    prevAnchScore = 0;
     game_over = false;
     paused = false;
     HideButtons();
@@ -469,7 +476,7 @@ function Init()
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
 
-    anch = new Anchor(800 + 200, 350, 3, false, false);
+    anch = new Anchor(800 + 200, 350, 3, false, true);
 
     imgHero1 = new Image();
     imgHero2 = new Image();
