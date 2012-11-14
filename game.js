@@ -5,6 +5,7 @@ var oldMouseY;
 var iSprPos;
 var ArrEnemie;
 var ptrHero;
+var anch;
 
 var scores;
 var game_over;
@@ -13,6 +14,7 @@ var size_arr = [0, 64, 77, 90, 104, 115];
 
 var img1, img2, img3, img4, img5, imgPlankton;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
+var imgAnchor;
 
 //=======================background imgs========================
 var back_1, back_2;
@@ -68,6 +70,13 @@ function Plankton(x, y, speed, active){
     this.y = y;
     this.speed = speed;
     this.isActive = active;
+}
+function Anchor(x, y, speed, start, active){
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.start = start;
+    this.active = active;
 }
 // -------------------------------------------------------------
 
@@ -133,9 +142,13 @@ function DrawEnemieFish( imageObj, num )  //рисует текстуру вра
 
 function DrawPlanktonFish( imageObj, num )  //рисует текстуру самого мелкого врага на канвасе
 {
-    return;
     //ctx.drawImage(imageObj, 50 * iSprPos, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
-    ctx.drawImage(imageObj, 0, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
+    ctx.drawImage(imageObj, 0, 0, 76, 100, Anchor.x, Anchor.y, 76, 100);
+}
+
+function DrawAnchor( imageObj )  //рисует текстуру якоря
+{
+    ctx.drawImage(imageObj,anch.x, anch.y);
 }
 
 function drawEnemies(ctx) {     //разбирает где какого врага необходимо будет отобразить на канвасе
@@ -160,6 +173,9 @@ function drawEnemies(ctx) {     //разбирает где какого вра�
     {
         DrawPlanktonFish( imgPlankton, i);
     }
+
+        DrawAnchor(imgAnchor);
+
 }
 
 function FindCollisions()  //поиск пересечений между текстурами Героя и остальных рыб
@@ -203,6 +219,22 @@ function FindCollisions()  //поиск пересечений между тек
             }
         }
     }
+    if (anch.x < 450)
+    {
+        if (anch.active)
+        {
+            if (ptrHero.x + size_arr[ptrHero.size] >= anch.x
+                && ptrHero.x < anch.x + 76 )
+            {
+                  if (ptrHero.y + 0.875*size_arr[ptrHero.size] >= anch.y)
+                {
+                    return 100;
+                    anch.active = false;
+                }
+            }
+        }
+
+    }
     return -1;
 }
 
@@ -234,6 +266,16 @@ function moveEnemies()  //передвигаем врагов на встреч�
 	}
 }
 
+function moveAnchor()
+{
+    anch.x -= anch.speed;
+    if (anch.x < -200)
+    {
+        anch.x = 1000;
+        anch.active = true;
+    }
+
+}
 
 function movePlankton()  //передвигаем планктон на встречу
 {
@@ -307,6 +349,11 @@ function drawScene() { // главная функция отрисовки
         //ptrHero.accel += 0.1; //герой движется с ускорением
 
         moveEnemies();
+        if (anch.start)
+        {
+            moveAnchor();
+        }
+
         //movePlankton();
 
         var ind = FindCollisions();
@@ -314,11 +361,18 @@ function drawScene() { // главная функция отрисовки
         {
             ptrHero.accel = c_hero_accel;
             if (ind >4)
-            {
-                ArrPlankton[ind-5].isActive = false;
-                scores += 25;
-                ArrPlankton[ind-5].x = -400;
-            }
+                if (ind == 100)
+                {
+                    ptrHero.life_count--;
+
+
+                }
+                else
+                {
+                    ArrPlankton[ind-5].isActive = false;
+                    scores += 25;
+                    ArrPlankton[ind-5].x = -400;
+                }
             else {
                 ArrEnemie[ind].isActive = false;
 
@@ -326,16 +380,7 @@ function drawScene() { // главная функция отрисовки
                 {
                     ptrHero.life_count--;
 
-                    if( ptrHero.life_count == 0 )
-                    {
-                        //Game Over
-                        game_over = true;
-                        document.getElementById('game_over').style.visibility='visible';
-                        document.getElementById('txt_2').style.visibility='visible';
-                        document.getElementById('txt_3').style.visibility='visible';
-                        document.getElementById('btn_2').style.visibility='visible';
-                        document.getElementById('btn_3').style.visibility='visible';
-                    }
+
                 }
                 else
                 {
@@ -343,12 +388,24 @@ function drawScene() { // главная функция отрисовки
                     ArrEnemie[ind].x = -400;
                 }
             }
+            if( ptrHero.life_count == 0 )
+            {
+                //Game Over
+                game_over = true;
+                document.getElementById('game_over').style.visibility='visible';
+                document.getElementById('txt_2').style.visibility='visible';
+                document.getElementById('txt_3').style.visibility='visible';
+                document.getElementById('btn_2').style.visibility='visible';
+                document.getElementById('btn_3').style.visibility='visible';
+            }
 
         };
 
         //отображаем все на канвасе
         drawEnemies(ctx);
-        drawHero( ptrHero.x, ptrHero.y );
+        drawHero(ptrHero.x, ptrHero.y );
+
+        //drawAnchor(ctx);
 
         //начисляем игровые очки и отображаем кол-во жизней
         scores += ptrHero.speed/2;
@@ -360,7 +417,11 @@ function drawScene() { // главная функция отрисовки
             ptrHero.size = 2;
         else
             if( scores >= c_give_level_3 && ptrHero.size < 3 )
+            {
                 ptrHero.size = 3;
+                anch.start = true;
+                //anch.active = true;
+            }
             else
                 if( scores >= c_give_level_4 && ptrHero.size < 4 )
                     ptrHero.size = 4;
@@ -408,6 +469,7 @@ function Init()
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
 
+    anch = new Anchor(800 + 200, 350, 3, false, false);
 
     imgHero1 = new Image();
     imgHero2 = new Image();
@@ -432,6 +494,10 @@ function Init()
     img3.src = 'imgs/enemie3.png';
     img4.src = 'imgs/enemie4.png';
     img5.src = 'imgs/enemie5.png';
+
+    imgAnchor = new Image();
+
+    imgAnchor.src = 'imgs/anchor.png';
 
     imgPlankton = new Image();
 
