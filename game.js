@@ -352,7 +352,7 @@ function drawScene() { // главная функция отрисовки
         //ptrHero.accel += 0.1; //герой движется с ускорением
 
         moveEnemies();
-        if (scores == prevAnchScore + getRandomInt(300, 500)*ptrHero.size)
+        if (scores > prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) && scores < prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) + 250)
         {
             anch.start = true;
         }
