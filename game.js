@@ -7,7 +7,8 @@ var ArrEnemie;
 var bonus;
 var ptrHero;
 var ptrRod;
-
+var anch;
+var prevAnchScore;
 var scores;
 var game_over;
 var paused;
@@ -15,6 +16,7 @@ var size_arr = [0, 64, 77, 90, 104, 115];
 
 var img1, img2, img3, img4, img5, imgPlankton, imgBonus;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
+var imgAnchor;
 
 //=======================background imgs========================
 var back_1, back_2;
@@ -88,6 +90,13 @@ function FishRod(_x, _y, _up, _active)
     this.active = _active;
     this.img = new Image();
 }
+function Anchor(x, y, speed, start, active){
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.start = start;
+    this.active = active;
+}
 // -------------------------------------------------------------
 
 // использование Math.round() даст неравномерное распределение!
@@ -134,6 +143,10 @@ function drawHero( x, y )   //определяет нужную текстуру
             return;
             brake;
     }
+}
+function DrawAnchor( imageObj )  //рисует текстуру якоря
+{
+    ctx.drawImage(imageObj,anch.x, anch.y);
 }
 
 function DrawEnemieFish( imageObj, num )  //рисует текстуру врага на канвасе
@@ -194,7 +207,7 @@ function drawEnemies(ctx) {     //разбирает где какого вра�
     {
         DrawPlanktonFish( imgPlankton, i);
     }
-
+    DrawAnchor(imgAnchor);
 
 }
 function drawBonus(x,y){
@@ -239,6 +252,22 @@ function FindCollisions()  //поиск пересечений между тек
             }
         }
     }
+    if (anch.x < 450)
+    {
+        if (anch.active == true)
+        {
+            if (ptrHero.x + size_arr[ptrHero.size] >= anch.x
+                && ptrHero.x < anch.x + 76 )
+            {
+                if (ptrHero.y + 0.875*size_arr[ptrHero.size] >= anch.y)
+                {
+                    anch.active = false;
+                    return 100;
+                }
+            }
+        }
+    }
+
     return -1;
 
 
@@ -290,6 +319,21 @@ function moveEnemies()  //передвигаем врагов на встреч�
 		}
 	}
 }
+
+function moveAnchor()
+{
+    anch.x -= c_near_back_speed + ptrHero.accel/10 + ptrHero.size/4;
+
+    if (anch.x < -200)
+    {
+        anch.start = false;
+        anch.active = true;
+        anch.x = 1000;
+    }
+
+}
+
+
 
 function movePlankton()  //передвигаем планктон на встречу
 {
@@ -423,6 +467,15 @@ function drawScene() { // главная функция отрисовки
         //ptrHero.accel += 0.1; //герой движется с ускорением
 
         moveEnemies();
+        if (scores > prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) && scores < prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) + 250)
+        {
+            anch.start = true;
+        }
+        if (anch.start)
+        {
+            moveAnchor();
+        }
+
         //movePlankton();
         moveBonus();
         moveFishRod();
@@ -433,11 +486,21 @@ function drawScene() { // главная функция отрисовки
         {
             ptrHero.accel = c_hero_accel;
             if (ind >4)
-            {
-                ArrPlankton[ind-5].isActive = false;
-                scores += 25;
-                ArrPlankton[ind-5].x = -400;
-            }
+
+                if (ind == 100)
+                    {
+                        ptrHero.life_count--;
+
+
+                    }
+                else
+                {
+                    ArrPlankton[ind-5].isActive = false;
+                    scores += 25;
+                    ArrPlankton[ind-5].x = -400;
+                }
+
+
             else {
                 ArrEnemie[ind].isActive = false;
 
@@ -534,6 +597,7 @@ function Init()
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
 
     bonus = new Bonus(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true);
+    anch = new Anchor(800 + 200, 350, c_near_back_speed + ptrHero.accel/10 + ptrHero.size/4, false, true);
 
     imgHero1 = new Image();
     imgHero2 = new Image();
@@ -558,6 +622,9 @@ function Init()
     img3.src = 'imgs/enemie3.png';
     img4.src = 'imgs/enemie4.png';
     img5.src = 'imgs/enemie5.png';
+
+    imgAnchor = new Image();
+    imgAnchor.src = 'imgs/anchor.png';
 
     imgPlankton = new Image();
     imgPlankton.src = 'imgs/plankton.png';
