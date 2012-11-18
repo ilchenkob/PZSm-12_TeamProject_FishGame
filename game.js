@@ -26,10 +26,7 @@ function FarBack(x)
 
 var back_3, back_4;
 var backImg_2;
-function NearBack(x)
-{
-    this.x = x;
-}
+
 //==============================================================
 
 //======================== constants ===========================
@@ -62,6 +59,7 @@ function Hero(x, y, size, speed, acc, lifes){
 	this.speed = speed;
     this.life_count = lifes;
     this.accel = acc;
+    this.opacity = 1;
 }
 function Enemie(x, y, size, speed, active){
     this.x = x;
@@ -82,7 +80,6 @@ function Bonus(x, y, speed, active){
     this.speed = speed;
     this.isActive = active;
 }
-
 function FishRod(_x, _y, _up, _active)
 {
     this.x = _x;
@@ -252,7 +249,7 @@ function bonusCollisions()
         return;
 
     if( ptrHero.x + size_arr[ptrHero.size] >= bonus.x
-        && ptrHero.x < bonus.x + 64 )
+        && ptrHero.x < bonus.x + imgBonus.height )
     {
 
         if( (ptrHero.y >= bonus.y && ptrHero.y <= bonus.y + 64)
@@ -260,9 +257,9 @@ function bonusCollisions()
             (ptrHero.y + size_arr[ptrHero.size] >= bonus.y && ptrHero.y + size_arr[ptrHero.size] <= bonus.y + 64)
             )
         {
-            ptrHero.life_count+=1;
-            //bonus.isActive = false;
-            bonus.x = -200;
+            ptrHero.life_count += 1;
+            bonus.isActive = false;
+            bonus.x = -300;
         }
     }
 }
@@ -295,7 +292,6 @@ function moveEnemies()  //передвигаем врагов на встреч�
 	}
 }
 
-
 function movePlankton()  //передвигаем планктон на встречу
 {
     for( var i = 0; i < 6; i++)
@@ -313,21 +309,19 @@ function movePlankton()  //передвигаем планктон на встр
         }
     }
 }
+
 function moveBonus()  //передвигаем рыбку-бонус на встречу
-{ if (ptrHero.life_count < 3 || bonus.isActive == false)
-{        bonus.x -= (bonus.speed + ptrHero.speed);
+{
+    if (ptrHero.life_count < 3)
+    {
+        bonus.x -= (bonus.speed + ptrHero.speed);
         if( bonus.x < -230 )
         {
-            bonus.x = 800 + getRandomInt(0,400);
-            bonus.y = getRandomInt(0, 416);
-            bonus.isActive = false;
-            if (bonus.y > (480 -64))
-            {
-                bonus.y -= 64;
-            }
+            bonus.x = 800 + getRandomInt(3000,5000);
+            bonus.y = getRandomInt(10, 350);
+            bonus.isActive = true;
         }
-
-}
+    }
 }
 
 function drawBack()
@@ -394,7 +388,9 @@ function rindRodCollisions()
     if( ptrRod.x <= ptrHero.x + size_arr[ptrHero.size]*0.9 )
     {
         //if( ptrHero.y + size_arr[ptrHero.size]*0.9 <= ptrRod.y + ptrRod.img.height )
-        if( ptrRod.y + ptrRod.img.height - ptrHero.y < 130 )
+        if( ( ptrRod.y + ptrRod.img.height - ptrHero.y < 130 )
+            && ( ptrHero.y + size_arr[ptrHero.size]*0.2 <= ptrRod.y + ptrRod.img.height )
+            )
         {
             ptrHero.life_count--;
             ptrRod.active = false;
@@ -474,8 +470,8 @@ function drawScene() { // главная функция отрисовки
 
         //отображаем все на канвасе
         drawEnemies(ctx);
-        drawHero( ptrHero.x, ptrHero.y );
         drawBonus(bonus.x, bonus.y);
+        drawHero( ptrHero.x, ptrHero.y );
 
         //начисляем игровые очки и отображаем кол-во жизней
         scores += ptrHero.speed/2;
