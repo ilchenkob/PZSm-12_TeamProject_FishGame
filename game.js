@@ -6,12 +6,7 @@ var iSprPos;
 var ArrEnemie;
 var bonus;
 var ptrHero;
-<<<<<<< HEAD
-var anch;
-var prevAnchScore;
-=======
 var ptrRod;
->>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
 
 var scores;
 var game_over;
@@ -256,20 +251,6 @@ function bonusCollisions()
     if( ptrHero.x + size_arr[ptrHero.size] >= bonus.x
         && ptrHero.x < bonus.x + imgBonus.height )
     {
-<<<<<<< HEAD
-        if (anch.active == true)
-        {
-            if (ptrHero.x + size_arr[ptrHero.size] >= anch.x
-                && ptrHero.x < anch.x + 76 )
-            {
-                  if (ptrHero.y + 0.875*size_arr[ptrHero.size] >= anch.y)
-                {
-                    anch.active = false;
-                    return 100;
-                }
-            }
-=======
-
         if( (ptrHero.y >= bonus.y && ptrHero.y <= bonus.y + 64)
             ||
             (ptrHero.y + size_arr[ptrHero.size] >= bonus.y && ptrHero.y + size_arr[ptrHero.size] <= bonus.y + 64)
@@ -278,7 +259,6 @@ function bonusCollisions()
             ptrHero.life_count += 1;
             bonus.isActive = false;
             bonus.x = -300;
->>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
         }
     }
 }
@@ -311,22 +291,6 @@ function moveEnemies()  //передвигаем врагов на встреч�
 	}
 }
 
-<<<<<<< HEAD
-function moveAnchor()
-{
-    anch.x -= anch.speed;
-
-    if (anch.x < -200)
-    {
-        anch.start = false;
-        anch.active = true;
-        anch.x = 1000;
-    }
-
-}
-
-=======
->>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
 function movePlankton()  //передвигаем планктон на встречу
 {
     for( var i = 0; i < 6; i++)
@@ -459,18 +423,6 @@ function drawScene() { // главная функция отрисовки
         //ptrHero.accel += 0.1; //герой движется с ускорением
 
         moveEnemies();
-<<<<<<< HEAD
-        if (scores > prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) && scores < prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) + 250)
-        {
-            anch.start = true;
-        }
-        if (anch.start)
-        {
-            moveAnchor();
-        }
-
-=======
->>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
         //movePlankton();
         moveBonus();
         moveFishRod();
@@ -581,13 +533,7 @@ function Init()
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
 
-<<<<<<< HEAD
-    anch = new Anchor(800 + 200, 350, 3, false, true);
-=======
     bonus = new Bonus(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true);
-
-
->>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
 
     imgHero1 = new Image();
     imgHero2 = new Image();
