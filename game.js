@@ -1,21 +1,25 @@
-var canvas, ctx;
+﻿var canvas, ctx;
 var score_txt;
 var touched;
 var oldMouseY;
 var iSprPos;
 var ArrEnemie;
+var bonus;
 var ptrHero;
+<<<<<<< HEAD
 var anch;
 var prevAnchScore;
+=======
+var ptrRod;
+>>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
 
 var scores;
 var game_over;
 var paused;
 var size_arr = [0, 64, 77, 90, 104, 115];
 
-var img1, img2, img3, img4, img5, imgPlankton;
+var img1, img2, img3, img4, img5, imgPlankton, imgBonus;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
-var imgAnchor;
 
 //=======================background imgs========================
 var back_1, back_2;
@@ -27,10 +31,7 @@ function FarBack(x)
 
 var back_3, back_4;
 var backImg_2;
-function NearBack(x)
-{
-    this.x = x;
-}
+
 //==============================================================
 
 //======================== constants ===========================
@@ -38,10 +39,15 @@ var c_min_speed  = 4;
 var c_max_speed  = 8;
 var c_min_size   = 1;
 var c_max_size   = 5;
-var c_hero_accel = 0.03;
+var c_hero_accel = 0.04;
 
 var c_far_back_speed = 1.8;
 var c_near_back_speed = 3;
+
+var c_rod_x_speed = 3;
+var c_rod_y_speed = 15;
+var c_rod_random_min = 700;
+var c_rod_random_max = 900;
 
 //количество игровых очков для роста героя
 var c_give_level_2 = 90;
@@ -58,6 +64,7 @@ function Hero(x, y, size, speed, acc, lifes){
 	this.speed = speed;
     this.life_count = lifes;
     this.accel = acc;
+    this.opacity = 1;
 }
 function Enemie(x, y, size, speed, active){
     this.x = x;
@@ -72,12 +79,19 @@ function Plankton(x, y, speed, active){
     this.speed = speed;
     this.isActive = active;
 }
-function Anchor(x, y, speed, start, active){
+function Bonus(x, y, speed, active){
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.start = start;
-    this.active = active;
+    this.isActive = active;
+}
+function FishRod(_x, _y, _up, _active)
+{
+    this.x = _x;
+    this.y = _y;
+    this.up = _up;
+    this.active = _active;
+    this.img = new Image();
 }
 // -------------------------------------------------------------
 
@@ -143,13 +157,24 @@ function DrawEnemieFish( imageObj, num )  //рисует текстуру вра
 
 function DrawPlanktonFish( imageObj, num )  //рисует текстуру самого мелкого врага на канвасе
 {
+    return;
     //ctx.drawImage(imageObj, 50 * iSprPos, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
-    ctx.drawImage(imageObj, 0, 0, 76, 100, Anchor.x, Anchor.y, 76, 100);
+    ctx.drawImage(imageObj, 0, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
 }
 
-function DrawAnchor( imageObj )  //рисует текстуру якоря
+function DrawBonusFish( imageObj, x,y )  //рисует текстуру рыбки-бонус на канвасе
 {
-    ctx.drawImage(imageObj,anch.x, anch.y);
+    ctx.drawImage(imageObj,
+        50 * iSprPos,
+        0,
+        50,
+        50,
+        bonus.x,
+        bonus.y,
+        50,
+        50);
+    //return;
+
 }
 
 function drawEnemies(ctx) {     //разбирает где какого врага необходимо будет отобразить на канвасе
@@ -175,10 +200,13 @@ function drawEnemies(ctx) {     //разбирает где какого вра�
         DrawPlanktonFish( imgPlankton, i);
     }
 
-        DrawAnchor(imgAnchor);
 
 }
+function drawBonus(x,y){
 
+        DrawBonusFish( imgBonus, x,y);
+
+}
 function FindCollisions()  //поиск пересечений между текстурами Героя и остальных рыб
 {
     for(var i = 0; i < 5; i++)
@@ -189,9 +217,7 @@ function FindCollisions()  //поиск пересечений между тек
             {
                 if( (ptrHero.y + 0.125*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     ||
-                    (ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
-                    ||
-                    (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                    (ptrHero.y + + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     )
                 {
                     return i;
@@ -206,13 +232,11 @@ function FindCollisions()  //поиск пересечений между тек
         if( ArrPlankton[i].x < 450 && ArrPlankton[i].isActive == true )
         {
             if( ptrHero.x + size_arr[ptrHero.size] >= ArrPlankton[i].x
-                && ptrHero.x < ArrPlankton[i].x + 50 )
+                && ptrHero.x < ArrPlankton[i].x + 64 )
             {
-                if( (ptrHero.y >= ArrPlankton[i].y && ptrHero.y <= ArrEnemie[i].y + 50)
-                    ||
-                    (ptrHero.y + size_arr[ptrHero.size] >= ArrPlankton[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrPlankton[i].y + 50)
-                    ||
-                    (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.125*50 && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrPlankton[i].y + 0.875*50)
+                if( (ptrHero.y >= ArrPlankton[i].y && ptrHero.y <= ArrEnemie[i].y + 64)
+                        ||
+                    (ptrHero.y + size_arr[ptrHero.size] >= ArrPlankton[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrPlankton[i].y + 64)
                     )
                 {
                     return i+5;
@@ -220,8 +244,19 @@ function FindCollisions()  //поиск пересечений между тек
             }
         }
     }
-    if (anch.x < 450)
+    return -1;
+
+
+}
+function bonusCollisions()
+{
+    if( bonus.x < 450 && bonus.isActive == false )
+        return;
+
+    if( ptrHero.x + size_arr[ptrHero.size] >= bonus.x
+        && ptrHero.x < bonus.x + imgBonus.height )
     {
+<<<<<<< HEAD
         if (anch.active == true)
         {
             if (ptrHero.x + size_arr[ptrHero.size] >= anch.x
@@ -233,10 +268,19 @@ function FindCollisions()  //поиск пересечений между тек
                     return 100;
                 }
             }
-        }
+=======
 
+        if( (ptrHero.y >= bonus.y && ptrHero.y <= bonus.y + 64)
+            ||
+            (ptrHero.y + size_arr[ptrHero.size] >= bonus.y && ptrHero.y + size_arr[ptrHero.size] <= bonus.y + 64)
+            )
+        {
+            ptrHero.life_count += 1;
+            bonus.isActive = false;
+            bonus.x = -300;
+>>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
+        }
     }
-    return -1;
 }
 
 function animateSprite()  //листание анимаций-текстур
@@ -252,7 +296,7 @@ function moveEnemies()  //передвигаем врагов на встреч�
 {
 	for( var i = 0; i < 5; i++)
 	{
-		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed);
+		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed + ptrHero.size/4);
 		if( ArrEnemie[i].x < -230 )
 		{
 			ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
@@ -267,6 +311,7 @@ function moveEnemies()  //передвигаем врагов на встреч�
 	}
 }
 
+<<<<<<< HEAD
 function moveAnchor()
 {
     anch.x -= anch.speed;
@@ -280,6 +325,8 @@ function moveAnchor()
 
 }
 
+=======
+>>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
 function movePlankton()  //передвигаем планктон на встречу
 {
     for( var i = 0; i < 6; i++)
@@ -288,12 +335,26 @@ function movePlankton()  //передвигаем планктон на встр
         if( ArrPlankton[i].x < -230 )
         {
             ArrPlankton[i].x = 800 + getRandomInt(0,400);
-            ArrPlankton[i].y = getRandomInt(0, 430);
+            ArrPlankton[i].y = getRandomInt(0, 416);
             ArrPlankton[i].isActive = true;
-            if (ArrPlankton[i].y > (480 - 50))
+            if (ArrPlankton[i].y > (480 -64))
             {
-                ArrPlankton[i].y -= 50;
+                ArrPlankton[i].y -= 64;
             }
+        }
+    }
+}
+
+function moveBonus()  //передвигаем рыбку-бонус на встречу
+{
+    if (ptrHero.life_count < 3)
+    {
+        bonus.x -= (bonus.speed + ptrHero.speed);
+        if( bonus.x < -230 )
+        {
+            bonus.x = 800 + getRandomInt(3000,5000);
+            bonus.y = getRandomInt(10, 350);
+            bonus.isActive = true;
         }
     }
 }
@@ -304,8 +365,8 @@ function drawBack()
     ctx.drawImage(backImg_1,back_1.x,0);
     ctx.drawImage(backImg_1,back_2.x,0);
 
-    back_1.x -= (c_far_back_speed + ptrHero.accel/10);
-    back_2.x -= (c_far_back_speed + ptrHero.accel/10);
+    back_1.x -= (c_far_back_speed + ptrHero.accel/10 + ptrHero.size/4);
+    back_2.x -= (c_far_back_speed + ptrHero.accel/10 + ptrHero.size/4);
 
     if( back_1.x <= -800 )
         back_1.x = back_2.x + 800;
@@ -316,8 +377,8 @@ function drawBack()
     ctx.drawImage(backImg_2,back_3.x,0);
     ctx.drawImage(backImg_2,back_4.x,0);
 
-    back_3.x -= (c_near_back_speed + ptrHero.accel/10);
-    back_4.x -= (c_near_back_speed + ptrHero.accel/10);
+    back_3.x -= (c_near_back_speed + ptrHero.accel/10 + ptrHero.size/4);
+    back_4.x -= (c_near_back_speed + ptrHero.accel/10 + ptrHero.size/4);
 
     if( back_3.x <= -1600 )
         back_3.x = back_4.x + 1600;
@@ -325,6 +386,52 @@ function drawBack()
         back_4.x = back_3.x + 1600;
 }
 
+function moveFishRod()
+{
+    ptrRod.x -= c_rod_x_speed;
+
+    if( ptrRod.x < c_rod_x_speed )
+    {
+        ptrRod.x = getRandomInt(c_rod_random_min, c_rod_random_max);
+        ptrRod.y = -250;
+        ptrRod.up = false;
+        ptrRod.active = true;
+        return;
+    }
+    if( ptrRod.x < 230 )
+    {
+        if( ptrRod.up == false && ptrRod.y < 0 )
+        {
+            ptrRod.y += c_rod_y_speed;
+        }
+        else
+        {
+            ptrRod.up = true;
+        }
+        if( ptrRod.up )
+            ptrRod.y -= c_rod_y_speed * 2;
+    }
+
+    ctx.drawImage(ptrRod.img, ptrRod.x, ptrRod.y, ptrRod.img.width, ptrRod.img.height);
+}
+
+function rindRodCollisions()
+{
+    if( !ptrRod.active )
+        return;
+
+    if( ptrRod.x <= ptrHero.x + size_arr[ptrHero.size]*0.9 )
+    {
+        //if( ptrHero.y + size_arr[ptrHero.size]*0.9 <= ptrRod.y + ptrRod.img.height )
+        if( ( ptrRod.y + ptrRod.img.height - ptrHero.y < 130 )
+            && ( ptrHero.y + size_arr[ptrHero.size]*0.2 <= ptrRod.y + ptrRod.img.height )
+            )
+        {
+            ptrHero.life_count--;
+            ptrRod.active = false;
+        }
+    }
+}
 
 function drawScene() { // главная функция отрисовки
 
@@ -340,18 +447,19 @@ function drawScene() { // главная функция отрисовки
 
         if( touched )   //герой либо тонет либо всплывает
         {
-            ptrHero.y -= (10 + ptrHero.accel);
+            ptrHero.y -= (14 + ptrHero.accel);
             if( ptrHero.y < 0 ) ptrHero.y = 0;
         }
         else
         {
-            ptrHero.y += (6 + ptrHero.accel);
+            ptrHero.y += (8 + ptrHero.accel);
             if( ptrHero.y > 450 - size_arr[ptrHero.size] ) ptrHero.y = 450 - size_arr[ptrHero.size];
         }
 
         //ptrHero.accel += 0.1; //герой движется с ускорением
 
         moveEnemies();
+<<<<<<< HEAD
         if (scores > prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) && scores < prevAnchScore + getRandomInt(300, 500)*(6 - ptrHero.size) + 250)
         {
             anch.start = true;
@@ -361,33 +469,29 @@ function drawScene() { // главная функция отрисовки
             moveAnchor();
         }
 
+=======
+>>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
         //movePlankton();
-
+        moveBonus();
+        moveFishRod();
+        rindRodCollisions();
+        bonusCollisions();
         var ind = FindCollisions();
         if( ind >= 0 )  //если есть пересечения героя с др. объектами
         {
             ptrHero.accel = c_hero_accel;
             if (ind >4)
-                if (ind == 100)
-                {
-                    ptrHero.life_count--;
-
-
-                }
-                else
-                {
-                    ArrPlankton[ind-5].isActive = false;
-                    scores += 25;
-                    ArrPlankton[ind-5].x = -400;
-                }
+            {
+                ArrPlankton[ind-5].isActive = false;
+                scores += 25;
+                ArrPlankton[ind-5].x = -400;
+            }
             else {
                 ArrEnemie[ind].isActive = false;
 
                 if( ArrEnemie[ind].size >= ptrHero.size )
                 {
                     ptrHero.life_count--;
-
-
                 }
                 else
                 {
@@ -395,24 +499,26 @@ function drawScene() { // главная функция отрисовки
                     ArrEnemie[ind].x = -400;
                 }
             }
-            if( ptrHero.life_count == 0 )
-            {
-                //Game Over
-                game_over = true;
-                document.getElementById('game_over').style.visibility='visible';
-                document.getElementById('txt_2').style.visibility='visible';
-                document.getElementById('txt_3').style.visibility='visible';
-                document.getElementById('btn_2').style.visibility='visible';
-                document.getElementById('btn_3').style.visibility='visible';
-            }
 
         };
 
+        if( ptrHero.life_count == 0 )
+        {
+            //Game Over
+            game_over = true;
+            document.getElementById('game_over').style.visibility='visible';
+            document.getElementById('txt_2').style.visibility='visible';
+            document.getElementById('txt_3').style.visibility='visible';
+            document.getElementById('btn_2').style.visibility='visible';
+            document.getElementById('btn_3').style.visibility='visible';
+        }
+
+
+
         //отображаем все на канвасе
         drawEnemies(ctx);
-        drawHero(ptrHero.x, ptrHero.y );
-
-        //drawAnchor(ctx);
+        drawBonus(bonus.x, bonus.y);
+        drawHero( ptrHero.x, ptrHero.y );
 
         //начисляем игровые очки и отображаем кол-во жизней
         scores += ptrHero.speed/2;
@@ -424,11 +530,7 @@ function drawScene() { // главная функция отрисовки
             ptrHero.size = 2;
         else
             if( scores >= c_give_level_3 && ptrHero.size < 3 )
-            {
                 ptrHero.size = 3;
-                anch.start = true;
-                //anch.active = true;
-            }
             else
                 if( scores >= c_give_level_4 && ptrHero.size < 4 )
                     ptrHero.size = 4;
@@ -461,6 +563,9 @@ function Init()
                        c_hero_accel,//acceleration
                        3);          //lifes
 
+    ptrRod = new FishRod( getRandomInt(c_rod_random_min,c_rod_random_max), -250, false, true);
+    ptrRod.img.src = 'imgs/rod.png';
+
     ArrEnemie = [];
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
     ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
@@ -476,7 +581,13 @@ function Init()
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
 
+<<<<<<< HEAD
     anch = new Anchor(800 + 200, 350, 3, false, true);
+=======
+    bonus = new Bonus(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true);
+
+
+>>>>>>> 6b0d46bf7abc3a8fc54e0cad01d7628bedc9e1ad
 
     imgHero1 = new Image();
     imgHero2 = new Image();
@@ -502,13 +613,11 @@ function Init()
     img4.src = 'imgs/enemie4.png';
     img5.src = 'imgs/enemie5.png';
 
-    imgAnchor = new Image();
-
-    imgAnchor.src = 'imgs/anchor.png';
-
     imgPlankton = new Image();
-
     imgPlankton.src = 'imgs/plankton.png';
+
+    imgBonus = new Image();
+    imgBonus.src = 'imgs/bonus.png';
 
     backImg_1 = new Image();
     backImg_1.src = 'imgs/back_1.png';
@@ -547,15 +656,18 @@ function ShowButtons()
 
 function onPauseClick()
 {
-    if( !paused )
+    if( !game_over )
     {
-        paused = true;
-        ShowButtons();
-    }
-    else
-    {
-        HideButtons();
-        paused = false;
+        if( !paused )
+        {
+            paused = true;
+            ShowButtons();
+        }
+        else
+        {
+            HideButtons();
+            paused = false;
+        }
     }
 }
 
