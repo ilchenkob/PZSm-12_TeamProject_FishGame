@@ -5,6 +5,7 @@ var oldMouseY;
 var iSprPos;
 var ArrEnemie;
 var bonus;
+var angry;
 var ptrHero;
 var ptrRod;
 var anch;
@@ -14,7 +15,7 @@ var game_over;
 var paused;
 var size_arr = [0, 64, 77, 90, 104, 115];
 
-var img1, img2, img3, img4, img5, imgPlankton, imgBonus;
+var img1, img2, img3, img4, img5, imgPlankton, imgBonus, imgAngry;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
 var imgAnchor;
 
@@ -82,6 +83,14 @@ function Bonus(x, y, speed, active){
     this.speed = speed;
     this.isActive = active;
 }
+
+function Angry(x, y, speed, active){
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.isActive = active;
+}
+
 function FishRod(_x, _y, _up, _active)
 {
     this.x = _x;
@@ -185,6 +194,21 @@ function DrawBonusFish( imageObj, x,y )  //рисует текстуру рыб�
 
 }
 
+function DrawAngryFish( imageObj, x,y )  //рисует текстуру злой рыбки на канвасе
+{
+    ctx.drawImage(imageObj,
+        50 * iSprPos,
+        0,
+        50,
+        50,
+        angry.x,
+        angry.y,
+        50,
+        50);
+    //return;
+
+}
+
 function drawEnemies(ctx) {     //разбирает где какого врага необходимо будет отобразить на канвасе
     for( var i = 0; i < 5; i++)
     {
@@ -213,6 +237,11 @@ function drawEnemies(ctx) {     //разбирает где какого вра�
 function drawBonus(x,y){
 
         DrawBonusFish( imgBonus, x,y);
+
+}
+function drawAngry(x,y){
+
+    DrawAngryFish( imgAngry, x,y);
 
 }
 function FindCollisions()  //поиск пересечений между текстурами Героя и остальных рыб
@@ -275,7 +304,7 @@ function FindCollisions()  //поиск пересечений между тек
 function bonusCollisions()
 {
     if( bonus.x < 450 && bonus.isActive == false )
-        return;
+       return;
 
     if( ptrHero.x + size_arr[ptrHero.size] >= bonus.x
         && ptrHero.x < bonus.x + imgBonus.height )
@@ -288,6 +317,36 @@ function bonusCollisions()
             ptrHero.life_count += 1;
             bonus.isActive = false;
             bonus.x = -300;
+        }
+    }
+}
+
+function angryCollisions()
+{
+    if( angry.x < 450 && angry.isActive == false )
+        return;
+
+    if( ptrHero.x + size_arr[ptrHero.size] >= angry.x
+        && ptrHero.x < angry.x + imgAngry.height )
+    {
+        if( (ptrHero.y >= angry.y && ptrHero.y <= angry.y + 64)
+            ||
+            (ptrHero.y + size_arr[ptrHero.size] >= angry.y && ptrHero.y + size_arr[ptrHero.size] <= angry.y + 64)
+            )
+        {
+            if(ptrHero.size == 1)
+            {
+                ptrHero.life_count--;
+            }
+            else
+            {
+                ptrHero.size--;
+            }
+            //ptrHero.life_count -= 1;
+            //angry.isActive = false;
+            //angry.x = -300;
+			angry.isActive = false;
+            angry.x = -300;
         }
     }
 }
@@ -363,6 +422,20 @@ function moveBonus()  //передвигаем рыбку-бонус на вст
             bonus.x = 800 + getRandomInt(3000,5000);
             bonus.y = getRandomInt(10, 350);
             bonus.isActive = true;
+        }
+    }
+}
+
+function moveAngry()  //передвигаем злую рыбку на встречу
+{
+    if (scores >= 150)
+    {
+        angry.x -= (angry.speed + ptrHero.speed);
+        if( angry.x < -230 )
+        {
+            angry.x = 800 + getRandomInt(3000,5000);
+            angry.y = getRandomInt(10, 350);
+            angry.isActive = true;
         }
     }
 }
@@ -478,9 +551,11 @@ function drawScene() { // главная функция отрисовки
 
         //movePlankton();
         moveBonus();
+        moveAngry();
         moveFishRod();
         rindRodCollisions();
         bonusCollisions();
+        angryCollisions();
         var ind = FindCollisions();
         if( ind >= 0 )  //если есть пересечения героя с др. объектами
         {
@@ -533,6 +608,7 @@ function drawScene() { // главная функция отрисовки
         //отображаем все на канвасе
         drawEnemies(ctx);
         drawBonus(bonus.x, bonus.y);
+        drawAngry(angry.x, angry.y);
         drawHero( ptrHero.x, ptrHero.y );
 
         //начисляем игровые очки и отображаем кол-во жизней
@@ -597,6 +673,7 @@ function Init()
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
 
     bonus = new Bonus(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true);
+    angry = new Angry(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true);
     anch = new Anchor(800 + 200, 350, c_near_back_speed + ptrHero.accel/10 + ptrHero.size/4, false, true);
 
     imgHero1 = new Image();
@@ -631,6 +708,9 @@ function Init()
 
     imgBonus = new Image();
     imgBonus.src = 'imgs/bonus.png';
+
+    imgAngry = new Image();
+    imgAngry.src = 'imgs/angry.png';
 
     backImg_1 = new Image();
     backImg_1.src = 'imgs/back_1.png';
