@@ -11,7 +11,7 @@ src: local("fut_rd"), /* проверяем наличие шрифта в ОС 
 }
 
 body {
-    background-color:#bababa;
+    background-color:#0e477b;
     color:#fff;
     font:14px/1.3 Arial,sans-serif;
 
@@ -21,8 +21,12 @@ body {
 -webkit-user-select: none;
 user-select: none;
 
-
 }
+
+#heroCanvas, #scene {
+    position: absolute;
+}
+
 
 a.button {
 
