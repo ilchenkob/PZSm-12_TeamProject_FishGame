@@ -399,7 +399,8 @@ function moveEnemies()  //передвигаем врагов на встреч�
 		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed + ptrHero.size/4);
 		if( ArrEnemie[i].x < -230 )
 		{
-			ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
+            ArrEnemie[i].size = getRandomInt(1, ptrHero.size + 2);
+            if (ArrEnemie[i].size > 5) ArrEnemie[i].size = 5;
 			ArrEnemie[i].x = 800 + getRandomInt(0,400);
 			ArrEnemie[i].y = getRandomInt(0, 416);
 			ArrEnemie[i].isActive = true;
@@ -723,11 +724,22 @@ function Init()
     ptrRod.img.src = 'imgs/rod.png';
 
     ArrEnemie = [];
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+    var enemieSize = 0;
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
 
     ArrPlankton = [];
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
