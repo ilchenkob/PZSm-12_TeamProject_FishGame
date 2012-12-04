@@ -16,6 +16,7 @@ var game_over;
 var paused;
 var size_arr = [0, 64, 77, 90, 104, 115];
 var blink_count;
+var arrRecords;
 
 var snd_click;
 var mainMusic;
@@ -565,6 +566,20 @@ function blink()
    }
 }
 
+function saveRecord (name , scores)
+{
+    localStorage.setItem(name , scores);
+}
+
+function sortRecords ()
+{
+    var localStorageKeys = Object.keys(localStorage);
+    for (i = 0; i < localStorageKeys.length; i++)
+    {
+        localStorage.getItem();
+    }
+}
+
 function showTooltip( txt, x, y )
 {
     ctx.fillStyle = "#fff";
@@ -719,7 +734,7 @@ function Init()
     blink_count = 0;
     game_over = false;
     paused = false;
-
+    arrRecords = [];
 	snd_click = document.getElementById("mus");
 	mainMusic = document.getElementById("main");
     
@@ -871,12 +886,16 @@ function onToMenuClick()
 {
 	snd_click.play();
     setInterval('document.location.href = "index.html"', 150 );
+    var name = document.getElementById('txt_field_name').value;
+    saveRecord( name.value, scores);
     mainMusic.pause();
 }
 
 function onReplayClick()
 {
 	snd_click.play();
+    var name = document.getElementById('txt_field_name').value;
+    saveRecord( name, scores);
     Init();
 }
 
