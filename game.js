@@ -682,13 +682,7 @@ function drawScene() { // главная функция отрисовки
         {
             //Game Over
             game_over = true;
-            document.getElementById('game_over').style.visibility='visible';
-            document.getElementById('txt_2').style.visibility='visible';
-            document.getElementById('txt_3').style.visibility='visible';
-            document.getElementById('btn_2').style.visibility='visible';
-            document.getElementById('btn_3').style.visibility='visible';
-            document.getElementById('txt_4').style.visibility='visible';
-            document.getElementById('txt_field_name').style.visibility='visible';
+            ShowGameOver();
         }
 
         //отображаем все на канвасе
@@ -739,7 +733,17 @@ function Init()
 	mainMusic = document.getElementById("main");
     
     mainMusic.play();
-    HideButtons();
+    
+	//Hide Pause menu controls
+	document.getElementById('game_over').style.visibility='hidden';
+    document.getElementById('txt_1').style.visibility='hidden';
+    document.getElementById('txt_2').style.visibility='hidden';
+    document.getElementById('txt_3').style.visibility='hidden';
+    document.getElementById('btn_1').style.visibility='hidden';
+    document.getElementById('btn_2').style.visibility='hidden';
+    document.getElementById('btn_3').style.visibility='hidden';
+    document.getElementById('txt_4').style.visibility='hidden';
+    document.getElementById('txt_field_name').style.visibility='hidden';
 
 	scores = 0;
     iSprPos = 0;
@@ -834,15 +838,64 @@ function Init()
 
 }
 
+function ShowGameOver()
+{
+	document.getElementById('game_over').style.visibility='visible';
+    document.getElementById('txt_2').style.visibility='visible';
+    document.getElementById('txt_3').style.visibility='visible';
+    document.getElementById('txt_4').style.visibility='visible';
+    document.getElementById('btn_2').style.visibility='visible';
+    document.getElementById('btn_3').style.visibility='visible';
+	document.getElementById('txt_field_name').style.visibility='visible';
+
+	var time = 1;
+	$("#game_over").animate({opacity: "0"},time);
+	$("#txt_2").animate({opacity: "0"},time);
+	$("#txt_3").animate({opacity: "0"},time);
+	$("#btn_2").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
+	$("#btn_3").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
+	$("#txt_4").animate({opacity: "0"},time);
+	$("#txt_field_name").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
+	
+	time = 300;
+	$("#game_over").animate({opacity: "1"},time);
+	$("#txt_2").animate({opacity: "1"},time);
+	$("#txt_3").animate({opacity: "1"},time);
+	$("#btn_2").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
+	$("#btn_3").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
+	$("#txt_4").animate({opacity: "1"},time);
+	$("#txt_field_name").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
+}
+
 function HideButtons()
 {
+	var time = 300;
+	$("#btn_1").animate({opacity: "0"},time, function(){
+		document.getElementById('btn_1').style.visibility='hidden';
+	}
+	);
+	$("#btn_2").animate({opacity: "0"},time, function(){
+		document.getElementById('btn_2').style.visibility='hidden';
+	}
+	);
+	$("#btn_3").animate({opacity: "0"},time, function(){
+		document.getElementById('btn_3').style.visibility='hidden';
+	}
+	);
+	$("#txt_1").animate({opacity: "0"},time, function(){
+		document.getElementById('txt_1').style.visibility='hidden';
+	}
+	);
+	$("#txt_2").animate({opacity: "0"},time, function(){
+		document.getElementById('txt_2').style.visibility='hidden';
+	}
+	);
+	$("#txt_3").animate({opacity: "0"},time, function(){
+		document.getElementById('txt_3').style.visibility='hidden';
+	}
+	);
+	
     document.getElementById('game_over').style.visibility='hidden';
-    document.getElementById('txt_1').style.visibility='hidden';
-    document.getElementById('txt_2').style.visibility='hidden';
-    document.getElementById('txt_3').style.visibility='hidden';
-    document.getElementById('btn_1').style.visibility='hidden';
-    document.getElementById('btn_2').style.visibility='hidden';
-    document.getElementById('btn_3').style.visibility='hidden';
     document.getElementById('txt_4').style.visibility='hidden';
     document.getElementById('txt_field_name').style.visibility='hidden';
 }
@@ -855,6 +908,36 @@ function ShowButtons()
     document.getElementById('btn_1').style.visibility='visible';
     document.getElementById('btn_2').style.visibility='visible';
     document.getElementById('btn_3').style.visibility='visible';
+	
+	var time = 1;
+	$("#btn_1").animate({top: "-300px"},time);
+	$("#btn_2").animate({top: "-200px"},time);
+	$("#btn_3").animate({top: "-95px"},time);	
+	$("#txt_1").animate({top: "-307px"},time);
+	$("#txt_2").animate({top: "-208px"},time);
+	$("#txt_3").animate({top: "-86px"},time);
+	$("#btn_1").animate({opacity: "1"},time);
+	$("#btn_2").animate({opacity: "1"},time);
+	$("#btn_3").animate({opacity: "1"},time);	
+	$("#txt_1").animate({opacity: "1"},time);
+	$("#txt_2").animate({opacity: "1"},time);
+	$("#txt_3").animate({opacity: "1"},time);
+
+	time = 450;
+	$("#btn_1").animate({top: "225px"},time);
+	$("#btn_2").animate({top: "325px"},time);
+	$("#btn_3").animate({top: "430px"},time);
+	$("#txt_1").animate({top: "232px"},time);
+	$("#txt_2").animate({top: "333px"},time);
+	$("#txt_3").animate({top: "439px"},time);
+	
+	time = 300;
+	$("#btn_1").animate({top: "190px"},time);
+	$("#btn_2").animate({top: "290px"},time);
+	$("#btn_3").animate({top: "395px"},time);
+	$("#txt_1").animate({top: "197px"},time);
+	$("#txt_2").animate({top: "298px"},time);
+	$("#txt_3").animate({top: "404px"},time);
 }
 
 function onPauseClick()
