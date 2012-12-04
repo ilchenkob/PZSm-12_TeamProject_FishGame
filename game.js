@@ -59,7 +59,7 @@ var c_give_level_5 = 400;
 //==============================================================
 
 // -------------------------------------------------------------
-function Hero(x, y, size, speed, acc, lifes){
+function Hero(x, y, size, speed, acc, lifes, pts){
     this.x = x;
     this.y = y;
     this.size = size;
@@ -67,6 +67,7 @@ function Hero(x, y, size, speed, acc, lifes){
     this.life_count = lifes;
     this.accel = acc;
     this.opacity = 1;
+    this.points = pts;
 }
 function Enemie(x, y, size, speed, active){
     this.x = x;
@@ -261,6 +262,8 @@ function FindCollisions()  //поиск пересечений между тек
                 if( (ptrHero.y + 0.125*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     ||
                     (ptrHero.y + + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
+                    ||
+                    (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     )
                 {
                     return i;
@@ -317,6 +320,8 @@ function bonusCollisions()
         if( (ptrHero.y >= bonus.y && ptrHero.y <= bonus.y + 64)
             ||
             (ptrHero.y + size_arr[ptrHero.size] >= bonus.y && ptrHero.y + size_arr[ptrHero.size] <= bonus.y + 64)
+            ||
+            (ptrHero.y <= bonus.y && ptrHero.y + size_arr[ptrHero.size] >= bonus.y + 64)
             )
         {
             ptrHero.life_count += 1;
@@ -337,6 +342,8 @@ function angryCollisions()
         if( (ptrHero.y >= angry.y && ptrHero.y <= angry.y + 64)
             ||
             (ptrHero.y + size_arr[ptrHero.size] >= angry.y && ptrHero.y + size_arr[ptrHero.size] <= angry.y + 64)
+            ||
+            (ptrHero.y <= angry.y && ptrHero.y + size_arr[ptrHero.size] >= angry.y + 64)
             )
         {
             if(ptrHero.size == 1)
@@ -347,6 +354,21 @@ function angryCollisions()
             else
             {
                 ptrHero.size--;
+                switch(ptrHero.size) {
+                    case 1:
+                        ptrHero.points = 0;
+                        break;
+                    case 2:
+                        ptrHero.points = c_give_level_2;
+                        break;
+                    case 3:
+                        ptrHero.points = c_give_level_3;
+                        break;
+                    case 4:
+                        ptrHero.points = c_give_level_4;
+                        break;
+                }
+
                 blink_count = c_blink_count;
             }
             //ptrHero.life_count -= 1;
@@ -374,7 +396,8 @@ function moveEnemies()  //передвигаем врагов на встреч�
 		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed + ptrHero.size/4);
 		if( ArrEnemie[i].x < -230 )
 		{
-			ArrEnemie[i].size = getRandomInt(c_min_size, c_max_size);
+            ArrEnemie[i].size = getRandomInt(1, ptrHero.size + 2);
+            if (ArrEnemie[i].size > 5) ArrEnemie[i].size = 5;
 			ArrEnemie[i].x = 800 + getRandomInt(0,400);
 			ArrEnemie[i].y = getRandomInt(0, 416);
 			ArrEnemie[i].isActive = true;
@@ -433,7 +456,7 @@ function moveBonus()  //передвигаем рыбку-бонус на вст
 
 function moveAngry()  //передвигаем злую рыбку на встречу
 {
-    if (scores >= 150)
+    if (ptrHero.size > 1)
     {
         angry.x -= (angry.speed + ptrHero.speed);
         if( angry.x < -230 )
@@ -611,6 +634,7 @@ function drawScene() { // главная функция отрисовки
                     {
                         ArrPlankton[ind-5].isActive = false;
                         scores += 25;
+                        ptrHero.points += 25;
                         ArrPlankton[ind-5].x = -400;
                     }
 
@@ -628,6 +652,7 @@ function drawScene() { // главная функция отрисовки
                         scores += 50*ArrEnemie[ind].size;
                         var text = "+" + 50*ArrEnemie[ind].size;
                         showTooltip(text, ArrEnemie[ind].x,ArrEnemie[ind].y);
+                        ptrHero.points += 50*ArrEnemie[ind].size;
                         ArrEnemie[ind].x = -400;
                     }
                 }
@@ -657,20 +682,21 @@ function drawScene() { // главная функция отрисовки
 
         //начисляем игровые очки и отображаем кол-во жизней
         scores += ptrHero.speed/2;
+        ptrHero.points += ptrHero.speed/2;
         score_txt.innerText= "Score: " + Math.floor(scores);
         document.getElementById("lifes").innerText = "Lifes: " + ptrHero.life_count;
 
         //проверка на необходимость роста героя
-        if( scores >= c_give_level_2 && ptrHero.size < 2 )
+        if( ptrHero.points >= c_give_level_2 && ptrHero.size < 2 )
             ptrHero.size = 2;
         else
-            if( scores >= c_give_level_3 && ptrHero.size < 3 )
+            if( ptrHero.points >= c_give_level_3 && ptrHero.size < 3 )
                 ptrHero.size = 3;
             else
-                if( scores >= c_give_level_4 && ptrHero.size < 4 )
+                if( ptrHero.points >= c_give_level_4 && ptrHero.size < 4 )
                     ptrHero.size = 4;
                 else
-                    if( scores >= c_give_level_5 && ptrHero.size < 5 )
+                    if( ptrHero.points >= c_give_level_5 && ptrHero.size < 5 )
                         ptrHero.size = 5;
 
     } //if( !game_over )
@@ -699,17 +725,29 @@ function Init()
                        1,           //size
                        1,           //speed
                        c_hero_accel,//acceleration
-                       3);          //lifes
+                       3,           //lifes
+                       0);          //points
 
     ptrRod = new FishRod( getRandomInt(c_rod_random_min,c_rod_random_max), -250, false, true);
     ptrRod.img.src = 'imgs/rod.png';
 
     ArrEnemie = [];
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+    var enemieSize = 0;
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    enemieSize = getRandomInt(1, ptrHero.size + 2);
+    if (enemieSize > 5) enemieSize = 5;
+		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
 
     ArrPlankton = [];
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
