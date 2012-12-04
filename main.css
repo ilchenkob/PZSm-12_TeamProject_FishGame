@@ -52,7 +52,7 @@ a {
 a.button1 {
 	background:url(imgs/hide_menu.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
 	background-size: 46px 46px;
-	top: 100px;
+	top: 190px;
 	text-indent:-999em; /*убираем текстовую ссылку*/
 	box-shadow:
 	inset #016590 0 0 6px 1px,
@@ -61,7 +61,7 @@ a.button1 {
 a.button2 {
 	background:url(imgs/repeat.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
 	background-size: 46px 46px;
-	top: 200px;
+	top: 290px;
 	text-indent:-999em; /*убираем текстовую ссылку*/
 	
 	box-shadow:
@@ -71,12 +71,30 @@ a.button2 {
 a.button3 {
 	background:url(imgs/to_menu.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
 	background-size: 46px 46px;
-	top: 305px;
+	top: 395px;
 	text-indent:-999em; /*убираем текстовую ссылку*/
 	
 	box-shadow:
 	inset #016590 0 0 6px 1px,
 	#016590 0 0 24px 15px;
+}
+
+.text_field[type="text"]{
+	display: block;
+	position: absolute;
+	top: 187px;
+	left: 390px;
+	height: 23px;
+	width: 200px;
+	
+	font-size: 18px;
+	color: #fff;
+	
+	background-color: #026793;
+	border:solid 1px #BFBDBD;
+	box-shadow:
+	inset #016590 0 0 4px 1px,
+	#016590 0 0 20px 12px;
 }
 
 .text {
@@ -111,15 +129,20 @@ h{
 }
 
 .btn_text1 {
-	top: 107px;
+	top: 197px;
 } 
 
 .btn_text2 {
-	top: 208px;
+	top: 298px;
 } 
 
 .btn_text3 {
-	top: 314px;
+	top: 404px;
+} 
+
+.txt_name {
+	top: 185px;
+	left: 250px;
 } 
 
 

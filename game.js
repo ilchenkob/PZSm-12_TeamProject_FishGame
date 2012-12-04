@@ -87,16 +87,13 @@ function Bonus(x, y, speed, active){
     this.speed = speed;
     this.isActive = active;
 }
-
 function Angry(x, y, speed, active){
     this.x = x;
     this.y = y;
     this.speed = speed;
     this.isActive = active;
 }
-
-function FishRod(_x, _y, _up, _active)
-{
+function FishRod(_x, _y, _up, _active){
     this.x = _x;
     this.y = _y;
     this.up = _up;
@@ -542,6 +539,13 @@ function blink()
    }
 }
 
+function showTooltip( txt, x, y )
+{
+    ctx.fillStyle = "#fff";
+    ctx.font = 'bold 16px tahoma';
+    ctx.fillText(txt, x, y);
+}
+
 function drawScene() { // главная функция отрисовки
 
     if( paused )
@@ -599,10 +603,10 @@ function drawScene() { // главная функция отрисовки
                 if (ind >4)
 
                     if (ind == 100)
-                        {
-                            ptrHero.life_count--;
-                            blink_count = c_blink_count;
-                        }
+                    {
+                        ptrHero.life_count--;
+                        blink_count = c_blink_count;
+                    }
                     else
                     {
                         ArrPlankton[ind-5].isActive = false;
@@ -622,6 +626,8 @@ function drawScene() { // главная функция отрисовки
                     else
                     {
                         scores += 50*ArrEnemie[ind].size;
+                        var text = "+" + 50*ArrEnemie[ind].size;
+                        showTooltip(text, ArrEnemie[ind].x,ArrEnemie[ind].y);
                         ArrEnemie[ind].x = -400;
                     }
                 }
@@ -638,6 +644,8 @@ function drawScene() { // главная функция отрисовки
             document.getElementById('txt_3').style.visibility='visible';
             document.getElementById('btn_2').style.visibility='visible';
             document.getElementById('btn_3').style.visibility='visible';
+            document.getElementById('txt_4').style.visibility='visible';
+            document.getElementById('txt_field_name').style.visibility='visible';
         }
 
         //отображаем все на канвасе
@@ -697,11 +705,11 @@ function Init()
     ptrRod.img.src = 'imgs/rod.png';
 
     ArrEnemie = [];
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
-    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), getRandomInt(c_min_size, c_max_size), getRandomInt(c_min_speed,c_max_speed), true));
 
     ArrPlankton = [];
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
@@ -774,6 +782,8 @@ function HideButtons()
     document.getElementById('btn_1').style.visibility='hidden';
     document.getElementById('btn_2').style.visibility='hidden';
     document.getElementById('btn_3').style.visibility='hidden';
+    document.getElementById('txt_4').style.visibility='hidden';
+    document.getElementById('txt_field_name').style.visibility='hidden';
 }
 
 function ShowButtons()
