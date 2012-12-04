@@ -1,0 +1,67 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+    <meta charset="utf-8" />
+    <title>Record table</title>
+
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="Game.js"></script>
+	
+	<script>
+	function href_to( arg )
+	{
+		var aud = document.getElementById('click'); 
+		aud.play(); 
+		var s = 'document.location.href=' + "'" + arg + "'";
+		setInterval(s, 150 );
+	}
+	</script>
+	
+</head>
+
+<body>
+<CENTER>
+    <table>
+        <TABLE cellSpacing=1 cellPadding=8>
+            <caption align="top"><b></b>
+            </caption>
+            <TBODY>
+            <TR align=middle>
+                <TH>Номер</TH>
+                <TH>Игрок</TH>
+                <TH>Очки</TH></TR>
+            <TR align=middle>
+                <TD> </TD>
+                <TD> </TD>
+                <TD> </TD></TR>
+            <TR align=middle>
+                <TD> </TD>
+                <TD> </TD>
+                <TD> </TD></TR>
+            <TR align=middle>
+                <TD> </TD>
+                <TD> </TD>
+                <TD> </TD></TR>
+            <TR align=middle>
+                <TD> </TD>
+                <TD> </TD>
+                <TD> </TD></TR>
+            <TR align=middle>
+                <TD> </TD>
+                <TD> </TD>
+                <TD> </TD></TR></TBODY>
+        </TABLE>
+</CENTER>
+
+<audio id="click" src="music/but.mp3" preload></audio>
+
+<a class="button2" href="#">КНОПКА</a>
+<h class="text4" href="#">Таблица рекордов</h>
+<a class="button2" id="btn_2" target="_self" onclick="href_to('index.html')">Button</a>
+</body>
+</html>

@@ -1,15 +1,39 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html" />
-	<title>Fish Game</title>
-	<link href="styles.css" media="all" rel="stylesheet"type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+    <meta charset="utf-8" />
+    <title>Fish game</title>
+
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="Game.js"></script>
+	
+	<script>
+	function href_to( arg )
+	{
+		var aud = document.getElementById('click'); 
+		aud.play(); 
+		var s = 'document.location.href=' + "'" + arg + "'";
+		setInterval(s, 150 );
+	}
+	</script>
+	
 </head>
 
 <body>
+
+	<audio id="click" src="music/but.mp3" preload></audio>
+
 	<h class="text1" href="#">Fish Game</h>
 	<h class="text2" href="#">Играть</h>
 	<h class="text3" href="#">Рекорды</h>
-	<a class="button1"href='record_ table.html'target="_self">open</a>
-	<a class="button"href='game.html'target="_self">open</a>
+	
+	<a class="button" id="btn" target="_self" onclick="href_to('game.html')">Button</a>
+    <a class="button1" id="btn_1" target="_self" onclick="href_to('records.html')">Button</a>
+	
 </body>
 </html>

@@ -17,6 +17,9 @@ var paused;
 var size_arr = [0, 64, 77, 90, 104, 115];
 var blink_count;
 
+var snd_click;
+var mainMusic;
+
 var img1, img2, img3, img4, img5, imgPlankton, imgBonus, imgAngry;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
 var imgAnchor;
@@ -716,6 +719,11 @@ function Init()
     blink_count = 0;
     game_over = false;
     paused = false;
+
+	snd_click = document.getElementById("mus");
+	mainMusic = document.getElementById("main");
+    
+    mainMusic.play();
     HideButtons();
 
 	scores = 0;
@@ -838,6 +846,7 @@ function onPauseClick()
 {
     if( !game_over )
     {
+	snd_click.play();
         if( !paused )
         {
             paused = true;
@@ -853,18 +862,21 @@ function onPauseClick()
 
 function onResumeClick()
 {
+	snd_click.play();
     HideButtons();
     paused = false;
 }
 
 function onToMenuClick()
 {
-    document.location.href = "index.html";
+	snd_click.play();
+    setInterval('document.location.href = "index.html"', 150 );
+    mainMusic.pause();
 }
 
 function onReplayClick()
 {
-    //document.location.reload();
+	snd_click.play();
     Init();
 }
 
