@@ -17,7 +17,7 @@ var paused;
 var size_arr = [0, 64, 77, 90, 104, 115];
 var blink_count;
 var arrRecords;
-
+//just for commit
 var snd_click;
 var mainMusic;
 
