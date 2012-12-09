@@ -20,6 +20,11 @@ var arrRecords;
 //just for commit
 var snd_click;
 var mainMusic;
+var rodMusic;
+var collMusic;
+var coll1Music;
+var ancMusic;
+//var coll2Music;
 
 var img1, img2, img3, img4, img5, imgPlankton, imgBonus, imgAngry;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
@@ -257,8 +262,10 @@ function drawAngry(x,y){
 
 function FindCollisions()  //поиск пересечений между текстурами Героя и остальных рыб
 {
+
     for(var i = 0; i < 5; i++)
     {
+        //coll2Music = document.getElementById("coll2");
         if( ArrEnemie[i].x < 450 && ArrEnemie[i].isActive == true )
         {
             if( ptrHero.x + size_arr[ptrHero.size]*0.9 >= ArrEnemie[i].x + 0.2*size_arr[ArrEnemie[i].size] && ptrHero.x < ArrEnemie[i].x + size_arr[ArrEnemie[i].size] )
@@ -270,6 +277,7 @@ function FindCollisions()  //поиск пересечений между тек
                     (ptrHero.y + 0.125*size_arr[ptrHero.size] <= ArrEnemie[i].y + 0.125*size_arr[ArrEnemie[i].size] && ptrHero.y + 0.875*size_arr[ptrHero.size] >= ArrEnemie[i].y + 0.875*size_arr[ArrEnemie[i].size])
                     )
                 {
+                    //coll2Music.play();
                     return i;
                 }
             }
@@ -279,6 +287,7 @@ function FindCollisions()  //поиск пересечений между тек
 
     for (var i = 0; i < 6; i++)
     {
+        //coll2Music = document.getElementById("coll2");
         if( ArrPlankton[i].x < 450 && ArrPlankton[i].isActive == true )
         {
             if( ptrHero.x + size_arr[ptrHero.size] >= ArrPlankton[i].x
@@ -289,6 +298,7 @@ function FindCollisions()  //поиск пересечений между тек
                     (ptrHero.y + size_arr[ptrHero.size] >= ArrPlankton[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrPlankton[i].y + 64)
                     )
                 {
+                    //coll2Music.play();
                     return i+5;
                 }
             }
@@ -296,6 +306,7 @@ function FindCollisions()  //поиск пересечений между тек
     }
     if (anch.x < 450)
     {
+        ancMusic = document.getElementById("anc");
         if (anch.active == true)
         {
             if (ptrHero.x + size_arr[ptrHero.size] >= anch.x
@@ -304,6 +315,7 @@ function FindCollisions()  //поиск пересечений между тек
                 if (ptrHero.y + 0.875*size_arr[ptrHero.size] >= anch.y)
                 {
                     anch.active = false;
+                    ancMusic.play();
                     return 100;
                 }
             }
@@ -315,6 +327,7 @@ function FindCollisions()  //поиск пересечений между тек
 
 function bonusCollisions()
 {
+    collMusic = document.getElementById("coll");
     if( bonus.x < 450 && bonus.isActive == false )
        return;
 
@@ -331,12 +344,14 @@ function bonusCollisions()
             ptrHero.life_count += 1;
             bonus.isActive = false;
             bonus.x = -300;
+            collMusic.play();
         }
     }
 }
 
 function angryCollisions()
 {
+    coll1Music = document.getElementById("coll1");
     if( angry.x < 450 && angry.isActive == false )
         return;
 
@@ -380,6 +395,7 @@ function angryCollisions()
             //angry.x = -300;
 			angry.isActive = false;
             angry.x = -300;
+            coll1Music.play();
         }
     }
 }
@@ -501,6 +517,7 @@ function drawBack()
 
 function moveFishRod()
 {
+    rodMusic = document.getElementById("rod");
     ptrRod.x -= c_rod_x_speed;
 
     if( ptrRod.x < c_rod_x_speed )
@@ -516,10 +533,12 @@ function moveFishRod()
         if( ptrRod.up == false && ptrRod.y < 0 )
         {
             ptrRod.y += c_rod_y_speed;
+            rodMusic.play();
         }
         else
         {
             ptrRod.up = true;
+            rodMusic.pause();
         }
         if( ptrRod.up )
             ptrRod.y -= c_rod_y_speed * 2;
@@ -683,6 +702,11 @@ function drawScene() { // главная функция отрисовки
         {
             //Game Over
             game_over = true;
+            overMusic = document.getElementById("over");
+            mainMusic.pause();
+            rodMusic.pause();
+            overMusic.currentTime = 0;
+            overMusic.play();
             ShowGameOver();
         }
 
@@ -732,8 +756,9 @@ function Init()
     arrRecords = [];
 	snd_click = document.getElementById("mus");
 	mainMusic = document.getElementById("main");
-    
     mainMusic.play();
+    overMusic = document.getElementById("over");
+    overMusic.pause();
     
 	//Hide Pause menu controls
 	document.getElementById('game_over').style.visibility='hidden';
@@ -848,7 +873,9 @@ function ShowGameOver()
     document.getElementById('btn_2').style.visibility='visible';
     document.getElementById('btn_3').style.visibility='visible';
 	document.getElementById('txt_field_name').style.visibility='visible';
-
+    overMusic = document.getElementById("over");
+    overMusic.currentTime = 0;
+    overMusic.play();
 	var time = 1;
 	$("#game_over").animate({opacity: "0"},time);
 	$("#txt_2").animate({opacity: "0"},time);
@@ -857,7 +884,8 @@ function ShowGameOver()
 	$("#btn_3").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
 	$("#txt_4").animate({opacity: "0"},time);
 	$("#txt_field_name").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
-	
+    overMusic.currentTime = 0;
+    overMusic.play();
 	time = 300;
 	$("#game_over").animate({opacity: "1"},time);
 	$("#txt_2").animate({opacity: "1"},time);
@@ -866,6 +894,8 @@ function ShowGameOver()
 	$("#btn_3").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
 	$("#txt_4").animate({opacity: "1"},time);
 	$("#txt_field_name").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
+    overMusic.currentTime = 0;
+    overMusic.play();
 }
 
 function HideButtons()
@@ -946,8 +976,10 @@ function onPauseClick()
     if( !game_over )
     {
 	snd_click.play();
+        mainMusic.pause();
         if( !paused )
         {
+            mainMusic.pause();
             paused = true;
             ShowButtons();
         }
@@ -955,6 +987,8 @@ function onPauseClick()
         {
             HideButtons();
             paused = false;
+            mainMusic.currentTime = 0;
+            mainMusic.play();
         }
     }
 }
@@ -964,6 +998,7 @@ function onResumeClick()
 	snd_click.play();
     HideButtons();
     paused = false;
+    mainMusic.play();
 }
 
 function onToMenuClick()
@@ -972,7 +1007,7 @@ function onToMenuClick()
     setInterval('document.location.href = "index.html"', 150 );
     var name = document.getElementById('txt_field_name').value;
     saveRecord( name.value, scores);
-    mainMusic.pause();
+
 }
 
 function onReplayClick()
@@ -980,6 +1015,8 @@ function onReplayClick()
 	snd_click.play();
     var name = document.getElementById('txt_field_name').value;
     saveRecord( name, scores);
+    mainMusic.currentTime = 0;
+    mainMusic.play();
     Init();
 }
 
