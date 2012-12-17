@@ -20,6 +20,15 @@
 		var s = 'document.location.href=' + "'" + arg + "'";
 		setInterval(s, 150 );
 	}
+	
+	function sound_on_off()
+	{
+		var chbox = document.getElementById("sound_checkbox");
+		if( chbox.checked == true )
+			alert("ON");
+		else
+			alert("OFF");
+	}
 	</script>
 	
 </head>
@@ -34,15 +43,8 @@
 	
 	<a class="button" id="btn" target="_self" onclick="href_to('game.html')">Button</a>
     <a class="button1" id="btn_1" target="_self" onclick="href_to('records.html')">Button</a>
-    <div class="onoffswitch">
-        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-        <label class="onoffswitch-label" for="myonoffswitch">
-            <div class="onoffswitch-inner">
-                <div class="onoffswitch-active"><div class="onoffswitch-switch">Звук on</div></div>
-                <div class="onoffswitch-inactive"><div class="onoffswitch-switch">Звук off</div></div>
-            </div>
-        </label>
-    </div>
+	
+	<label><input type="checkbox" value="1" name="k" id="sound_checkbox" onclick="sound_on_off()"><span></span></label>
 
 </body>
 </html>
