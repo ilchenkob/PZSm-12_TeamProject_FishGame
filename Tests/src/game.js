@@ -518,7 +518,7 @@ function drawBack()
 
 function moveFishRod()
 {
-    rodMusic = document.getElementById("rod");
+
     ptrRod.x -= c_rod_x_speed;
 
     if( ptrRod.x < c_rod_x_speed )
@@ -534,12 +534,12 @@ function moveFishRod()
         if( ptrRod.up == false && ptrRod.y < 0 )
         {
             ptrRod.y += c_rod_y_speed;
-            rodMusic.play();
+
         }
         else
         {
             ptrRod.up = true;
-            rodMusic.pause();
+
         }
         if( ptrRod.up )
             ptrRod.y -= c_rod_y_speed * 2;

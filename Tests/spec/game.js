@@ -168,5 +168,60 @@ describe("Game", function() {
 	
 	expect(back_1.x).toBeLessThan(old_position);
   });
-    
+
+    it("Anchor should appear", function() {
+
+        anch.start = false;
+        anch.active = true;
+        anch.x = -200;
+
+        drawScene();
+        drawScene();
+
+        expect(anch.x).toBeLessThan(1000);
+    });
+
+    it("Bonus should appear", function() {
+
+        ptrHero.life_count = 3;
+        bonus.isActive = true;
+
+        drawScene();
+        drawScene();
+
+        expect(ptrHero.life_count).toBeGreaterThan(0);
+    });
+
+    it("Fish should die", function() {
+
+        ptrHero.life_count = 0;
+
+        drawScene();
+
+        expect(game_over).toEqual(true);
+    });
+
+    it("Fish should be small in the early", function() {
+        ptrHero.points = 0;
+        drawScene();
+        drawScene();
+        expect(ptrHero.size).toBe(1);
+
+
+    });
+
+    it("Rod to take the life", function() {
+        ptrHero.life_count=3;
+
+        ptrRod.x = 680;
+        ptrRod.y = 40;
+        ptrHero.x = 650;
+        ptrHero.y = 20;
+
+        drawScene();
+
+        expect(ptrHero.life_count).toBeLessThan(3);
+
+
+    });
 });
