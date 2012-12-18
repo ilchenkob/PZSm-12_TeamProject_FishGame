@@ -704,10 +704,10 @@ function drawScene() { // главная функция отрисовки
             //Game Over
             game_over = true;
             overMusic = document.getElementById("over");
-            mainMusic.pause();
-            rodMusic.pause();
-            overMusic.currentTime = 0;
-            overMusic.play();
+            //mainMusic.pause();
+            //rodMusic.pause();
+            //overMusic.currentTime = 0;
+            //overMusic.play();
             ShowGameOver();
         }
 
@@ -868,36 +868,18 @@ function Init()
 
 function ShowGameOver()
 {
-	document.getElementById('game_over').style.visibility='visible';
-    document.getElementById('txt_2').style.visibility='visible';
-    document.getElementById('txt_3').style.visibility='visible';
-    document.getElementById('txt_4').style.visibility='visible';
-    document.getElementById('btn_2').style.visibility='visible';
-    document.getElementById('btn_3').style.visibility='visible';
-	document.getElementById('txt_field_name').style.visibility='visible';
-    overMusic = document.getElementById("over");
-    overMusic.currentTime = 0;
-    overMusic.play();
+	//document.getElementById('game_over').style.visibility='visible';
+    //document.getElementById('txt_2').style.visibility='visible';
+    //document.getElementById('txt_3').style.visibility='visible';
+    //document.getElementById('txt_4').style.visibility='visible';
+    //document.getElementById('btn_2').style.visibility='visible';
+    //document.getElementById('btn_3').style.visibility='visible';
+	//document.getElementById('txt_field_name').style.visibility='visible';
+    //overMusic = document.getElementById("over");
+    //overMusic.currentTime = 0;
+    //overMusic.play();
 	var time = 1;
-	$("#game_over").animate({opacity: "0"},time);
-	$("#txt_2").animate({opacity: "0"},time);
-	$("#txt_3").animate({opacity: "0"},time);
-	$("#btn_2").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
-	$("#btn_3").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
-	$("#txt_4").animate({opacity: "0"},time);
-	$("#txt_field_name").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
-    overMusic.currentTime = 0;
-    overMusic.play();
-	time = 300;
-	$("#game_over").animate({opacity: "1"},time);
-	$("#txt_2").animate({opacity: "1"},time);
-	$("#txt_3").animate({opacity: "1"},time);
-	$("#btn_2").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
-	$("#btn_3").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
-	$("#txt_4").animate({opacity: "1"},time);
-	$("#txt_field_name").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
-    overMusic.currentTime = 0;
-    overMusic.play();
+	
 }
 
 function HideButtons()

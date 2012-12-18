@@ -168,5 +168,5 @@ describe("Game", function() {
 	
 	expect(back_1.x).toBeLessThan(old_position);
   });
-  
+    
 });
