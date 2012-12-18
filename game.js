@@ -315,7 +315,8 @@ function FindCollisions()  //поиск пересечений между тек
                 if (ptrHero.y + 0.875*size_arr[ptrHero.size] >= anch.y)
                 {
                     anch.active = false;
-                    ancMusic.play();
+					if( localStorage["sound"] == "1" )
+						ancMusic.play();
                     return 100;
                 }
             }
@@ -344,7 +345,8 @@ function bonusCollisions()
             ptrHero.life_count += 1;
             bonus.isActive = false;
             bonus.x = -300;
-            collMusic.play();
+			if( localStorage["sound"] == "1" )
+				collMusic.play();
         }
     }
 }
@@ -395,7 +397,8 @@ function angryCollisions()
             //angry.x = -300;
 			angry.isActive = false;
             angry.x = -300;
-            coll1Music.play();
+			if( localStorage["sound"] == "1" )
+				coll1Music.play();
         }
     }
 }
@@ -533,7 +536,8 @@ function moveFishRod()
         if( ptrRod.up == false && ptrRod.y < 0 )
         {
             ptrRod.y += c_rod_y_speed;
-            rodMusic.play();
+			if( localStorage["sound"] == "1" )
+				rodMusic.play();
         }
         else
         {
@@ -706,7 +710,8 @@ function drawScene() { // главная функция отрисовки
             mainMusic.pause();
             rodMusic.pause();
             overMusic.currentTime = 0;
-            overMusic.play();
+			if( localStorage["sound"] == "1" )
+				overMusic.play();
             ShowGameOver();
         }
 
@@ -756,7 +761,8 @@ function Init()
     arrRecords = [];
 	snd_click = document.getElementById("mus");
 	mainMusic = document.getElementById("main");
-    mainMusic.play();
+	if( localStorage["sound"] == "1" )
+		mainMusic.play();
     overMusic = document.getElementById("over");
     overMusic.pause();
     
@@ -875,7 +881,8 @@ function ShowGameOver()
 	document.getElementById('txt_field_name').style.visibility='visible';
     overMusic = document.getElementById("over");
     overMusic.currentTime = 0;
-    overMusic.play();
+	if( localStorage["sound"] == "1" )
+		overMusic.play();
 	var time = 1;
 	$("#game_over").animate({opacity: "0"},time);
 	$("#txt_2").animate({opacity: "0"},time);
@@ -885,7 +892,8 @@ function ShowGameOver()
 	$("#txt_4").animate({opacity: "0"},time);
 	$("#txt_field_name").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
     overMusic.currentTime = 0;
-    overMusic.play();
+	if( localStorage["sound"] == "1" )
+		overMusic.play();
 	time = 300;
 	$("#game_over").animate({opacity: "1"},time);
 	$("#txt_2").animate({opacity: "1"},time);
@@ -895,7 +903,8 @@ function ShowGameOver()
 	$("#txt_4").animate({opacity: "1"},time);
 	$("#txt_field_name").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
     overMusic.currentTime = 0;
-    overMusic.play();
+	if( localStorage["sound"] == "1" )
+		overMusic.play();
 }
 
 function HideButtons()
@@ -975,7 +984,9 @@ function onPauseClick()
 {
     if( !game_over )
     {
-	snd_click.play();
+	if( localStorage["sound"] == "1" )
+		snd_click.play();
+		
         mainMusic.pause();
         if( !paused )
         {
@@ -988,22 +999,26 @@ function onPauseClick()
             HideButtons();
             paused = false;
             mainMusic.currentTime = 0;
-            mainMusic.play();
+			if( localStorage["sound"] == "1" )
+				mainMusic.play();
         }
     }
 }
 
 function onResumeClick()
 {
-	snd_click.play();
+	if( localStorage["sound"] == "1" )
+		snd_click.play();
     HideButtons();
     paused = false;
-    mainMusic.play();
+	if( localStorage["sound"] == "1" )
+		mainMusic.play();
 }
 
 function onToMenuClick()
 {
-	snd_click.play();
+	if( localStorage["sound"] == "1" )
+		snd_click.play();
     setInterval('document.location.href = "index.html"', 150 );
     var name = document.getElementById('txt_field_name').value;
     saveRecord( name.value, scores);
@@ -1012,11 +1027,13 @@ function onToMenuClick()
 
 function onReplayClick()
 {
-	snd_click.play();
+	if( localStorage["sound"] == "1" )
+		snd_click.play();
     var name = document.getElementById('txt_field_name').value;
     saveRecord( name, scores);
     mainMusic.currentTime = 0;
-    mainMusic.play();
+	if( localStorage["sound"] == "1" )
+		mainMusic.play();
     Init();
 }
 

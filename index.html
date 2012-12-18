@@ -13,10 +13,25 @@
     <script type="text/javascript" src="game.js"></script>
 	
 	<script>
+	
+	function loaded()
+	{
+		if( localStorage.getItem("sound") )
+		{
+			var chbox = document.getElementById("sound_checkbox");
+				chbox.checked = (localStorage["sound"] == "1");
+		}
+		else
+		{
+			localStorage.setItem("sound","1");
+		}
+	}
+	
 	function href_to( arg )
 	{
 		var aud = document.getElementById('click'); 
-		aud.play(); 
+		if( localStorage["sound"] == "1" )
+			aud.play(); 
 		var s = 'document.location.href=' + "'" + arg + "'";
 		setInterval(s, 150 );
 	}
@@ -25,15 +40,19 @@
 	{
 		var chbox = document.getElementById("sound_checkbox");
 		if( chbox.checked == true )
-			alert("ON");
+		{
+			localStorage.setItem("sound","1");
+		}
 		else
-			alert("OFF");
+		{
+			localStorage.setItem("sound","0");
+		}
 	}
 	</script>
 	
 </head>
 
-<body>
+<body onLoad="loaded()">
 
 	<audio id="click" src="music/but.mp3" preload></audio>
 
@@ -44,7 +63,7 @@
 	<a class="button" id="btn" target="_self" onclick="href_to('game.html')">Button</a>
     <a class="button1" id="btn_1" target="_self" onclick="href_to('records.html')">Button</a>
 	
-	<label><input type="checkbox" value="1" name="k" id="sound_checkbox" onclick="sound_on_off()"><span></span></label>
+	<label><input type="checkbox" value="1" name="k" id="sound_checkbox" onclick="sound_on_off()"><span></span></label>	
 
 </body>
 </html>

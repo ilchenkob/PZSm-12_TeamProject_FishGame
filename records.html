@@ -16,7 +16,8 @@
 	function href_to( arg )
 	{
 		var aud = document.getElementById('click'); 
-		aud.play(); 
+		if( localStorage["sound"] == "1" )
+			aud.play(); 
 		var s = 'document.location.href=' + "'" + arg + "'";
 		setInterval(s, 150 );
 	}
