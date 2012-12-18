@@ -26,6 +26,8 @@ var coll1Music;
 var ancMusic;
 //var coll2Music;
 
+var resultTable;
+
 var img1, img2, img3, img4, img5, imgPlankton, imgBonus, imgAngry;
 var imgHero1, imgHero2, imgHero3, imgHero4, imgHero5;
 var imgAnchor;
@@ -72,7 +74,7 @@ function Hero(x, y, size, speed, acc, lifes, pts){
     this.x = x;
     this.y = y;
     this.size = size;
-	this.speed = speed;
+    this.speed = speed;
     this.life_count = lifes;
     this.accel = acc;
     this.opacity = 1;
@@ -174,14 +176,14 @@ function DrawAnchor( imageObj )  //рисует текстуру якоря
 function DrawEnemieFish( imageObj, num )  //рисует текстуру врага на канвасе
 {
     ctx.drawImage(imageObj,
-                  size_arr[ArrEnemie[num].size] * iSprPos,
-                  0,
-                  size_arr[ArrEnemie[num].size],
-                  size_arr[ArrEnemie[num].size],
-                  ArrEnemie[num].x,
-                  ArrEnemie[num].y,
-                  size_arr[ArrEnemie[num].size],
-                  size_arr[ArrEnemie[num].size]
+        size_arr[ArrEnemie[num].size] * iSprPos,
+        0,
+        size_arr[ArrEnemie[num].size],
+        size_arr[ArrEnemie[num].size],
+        ArrEnemie[num].x,
+        ArrEnemie[num].y,
+        size_arr[ArrEnemie[num].size],
+        size_arr[ArrEnemie[num].size]
     );
 }
 
@@ -225,19 +227,19 @@ function DrawAngryFish( imageObj, x,y )  //рисует текстуру зло�
 function drawEnemies(ctx) {     //разбирает где какого врага необходимо будет отобразить на канвасе
     for( var i = 0; i < 5; i++)
     {
-            switch (ArrEnemie[i].size) //взависимости от размера используем разные текстуры при рисовании
-            {
-                case 1: DrawEnemieFish( img1, i );
-                    break;
-                case 2: DrawEnemieFish( img2, i );
-                    break;
-                case 3: DrawEnemieFish( img3, i );
-                    break;
-                case 4: DrawEnemieFish( img4, i );
-                    break;
-                case 5: DrawEnemieFish( img5, i );
-                    break;
-            }
+        switch (ArrEnemie[i].size) //взависимости от размера используем разные текстуры при рисовании
+        {
+            case 1: DrawEnemieFish( img1, i );
+                break;
+            case 2: DrawEnemieFish( img2, i );
+                break;
+            case 3: DrawEnemieFish( img3, i );
+                break;
+            case 4: DrawEnemieFish( img4, i );
+                break;
+            case 5: DrawEnemieFish( img5, i );
+                break;
+        }
     }
 
     for( var i = 0; i < 6; i++)
@@ -250,7 +252,7 @@ function drawEnemies(ctx) {     //разбирает где какого вра�
 
 function drawBonus(x,y){
 
-        DrawBonusFish( imgBonus, x,y);
+    DrawBonusFish( imgBonus, x,y);
 
 }
 
@@ -294,7 +296,7 @@ function FindCollisions()  //поиск пересечений между тек
                 && ptrHero.x < ArrPlankton[i].x + 64 )
             {
                 if( (ptrHero.y >= ArrPlankton[i].y && ptrHero.y <= ArrEnemie[i].y + 64)
-                        ||
+                    ||
                     (ptrHero.y + size_arr[ptrHero.size] >= ArrPlankton[i].y && ptrHero.y + size_arr[ptrHero.size] <= ArrPlankton[i].y + 64)
                     )
                 {
@@ -315,8 +317,8 @@ function FindCollisions()  //поиск пересечений между тек
                 if (ptrHero.y + 0.875*size_arr[ptrHero.size] >= anch.y)
                 {
                     anch.active = false;
-					if( localStorage["sound"] == "1" )
-						ancMusic.play();
+                    if( localStorage["sound"] == "1" )
+                        ancMusic.play();
                     return 100;
                 }
             }
@@ -330,7 +332,7 @@ function bonusCollisions()
 {
     collMusic = document.getElementById("coll");
     if( bonus.x < 450 && bonus.isActive == false )
-       return;
+        return;
 
     if( ptrHero.x + size_arr[ptrHero.size] >= bonus.x
         && ptrHero.x < bonus.x + imgBonus.height )
@@ -345,8 +347,8 @@ function bonusCollisions()
             ptrHero.life_count += 1;
             bonus.isActive = false;
             bonus.x = -300;
-			if( localStorage["sound"] == "1" )
-				collMusic.play();
+            if( localStorage["sound"] == "1" )
+                collMusic.play();
         }
     }
 }
@@ -395,41 +397,41 @@ function angryCollisions()
             //ptrHero.life_count -= 1;
             //angry.isActive = false;
             //angry.x = -300;
-			angry.isActive = false;
+            angry.isActive = false;
             angry.x = -300;
-			if( localStorage["sound"] == "1" )
-				coll1Music.play();
+            if( localStorage["sound"] == "1" )
+                coll1Music.play();
         }
     }
 }
 
 function animateSprite()  //листание анимаций-текстур
 {
-	iSprPos++;
+    iSprPos++;
     if (iSprPos >= 4)
-	{
-		iSprPos = 0;
-	}
+    {
+        iSprPos = 0;
+    }
 }
 
 function moveEnemies()  //передвигаем врагов на встречу
 {
-	for( var i = 0; i < 5; i++)
-	{
-		ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed + ptrHero.size/4);
-		if( ArrEnemie[i].x < -230 )
-		{
+    for( var i = 0; i < 5; i++)
+    {
+        ArrEnemie[i].x -= (ArrEnemie[i].speed + ptrHero.speed + ptrHero.size/4);
+        if( ArrEnemie[i].x < -230 )
+        {
             ArrEnemie[i].size = getRandomInt(1, ptrHero.size + 2);
             if (ArrEnemie[i].size > 5) ArrEnemie[i].size = 5;
-			ArrEnemie[i].x = 800 + getRandomInt(0,400);
-			ArrEnemie[i].y = getRandomInt(0, 416);
-			ArrEnemie[i].isActive = true;
-			if (ArrEnemie[i].y > (480 - (128 * (1+((ArrEnemie[i].size * 0.2) - 0.2)))))
-			{
-				ArrEnemie[i].y -= 128 * (1+((ArrEnemie[i].size * 0.2) - 0.2));
-			}
-		}
-	}
+            ArrEnemie[i].x = 800 + getRandomInt(0,400);
+            ArrEnemie[i].y = getRandomInt(0, 416);
+            ArrEnemie[i].isActive = true;
+            if (ArrEnemie[i].y > (480 - (128 * (1+((ArrEnemie[i].size * 0.2) - 0.2)))))
+            {
+                ArrEnemie[i].y -= 128 * (1+((ArrEnemie[i].size * 0.2) - 0.2));
+            }
+        }
+    }
 }
 
 function moveAnchor()
@@ -536,8 +538,8 @@ function moveFishRod()
         if( ptrRod.up == false && ptrRod.y < 0 )
         {
             ptrRod.y += c_rod_y_speed;
-			if( localStorage["sound"] == "1" )
-				rodMusic.play();
+            if( localStorage["sound"] == "1" )
+                rodMusic.play();
         }
         else
         {
@@ -572,26 +574,65 @@ function findRodCollisions()
 
 function blink()
 {
-   if( blink_count > 0 )
-   {
-       if( blink_count%2 == 0 )
-       {
-           ctxHero.globalAlpha -= 0.15;
-           if( ctxHero.globalAlpha <= 0.15 )
-               blink_count--;
-       }
-       else
-       {
-           ctxHero.globalAlpha += 0.15;
-           if( ctxHero.globalAlpha >= 1 )
-               blink_count--;
-       }
-   }
+    if( blink_count > 0 )
+    {
+        if( blink_count%2 == 0 )
+        {
+            ctxHero.globalAlpha -= 0.15;
+            if( ctxHero.globalAlpha <= 0.15 )
+                blink_count--;
+        }
+        else
+        {
+            ctxHero.globalAlpha += 0.15;
+            if( ctxHero.globalAlpha >= 1 )
+                blink_count--;
+        }
+    }
 }
 
 function saveRecord (name , scores)
 {
-    localStorage.setItem(name , scores);
+    scores = Math.round( scores );
+    if( scores > resultTable[4][1] )
+    {
+        resultTable[4][0] = name;
+        resultTable[4][1] = scores;
+
+        if( scores > resultTable[3][1] )
+        {
+            resultTable[4][0] = resultTable[3][0];
+            resultTable[4][1] = resultTable[3][1];
+            resultTable[3][0] = name;
+            resultTable[3][1] = scores;
+
+            if( scores > resultTable[2][1] )
+            {
+                resultTable[3][0] = resultTable[2][0];
+                resultTable[3][1] = resultTable[2][1];
+                resultTable[2][0] = name;
+                resultTable[2][1] = scores;
+
+                if( scores > resultTable[1][1] )
+                {
+                    resultTable[2][0] = resultTable[1][0];
+                    resultTable[2][1] = resultTable[1][1];
+                    resultTable[1][0] = name;
+                    resultTable[1][1] = scores;
+
+                    if( scores > resultTable[0][1] )
+                    {
+                        resultTable[1][0] = resultTable[0][0];
+                        resultTable[1][1] = resultTable[0][1];
+                        resultTable[0][0] = name;
+                        resultTable[0][1] = scores;
+                    }
+                }
+            }
+        }
+    }
+
+    localStorage["results"] = JSON.stringify(resultTable);
 }
 
 function sortRecords ()
@@ -710,8 +751,8 @@ function drawScene() { // главная функция отрисовки
             mainMusic.pause();
             rodMusic.pause();
             overMusic.currentTime = 0;
-			if( localStorage["sound"] == "1" )
-				overMusic.play();
+            if( localStorage["sound"] == "1" )
+                overMusic.play();
             ShowGameOver();
         }
 
@@ -732,14 +773,14 @@ function drawScene() { // главная функция отрисовки
         if( ptrHero.points >= c_give_level_2 && ptrHero.size < 2 )
             ptrHero.size = 2;
         else
-            if( ptrHero.points >= c_give_level_3 && ptrHero.size < 3 )
-                ptrHero.size = 3;
-            else
-                if( ptrHero.points >= c_give_level_4 && ptrHero.size < 4 )
-                    ptrHero.size = 4;
-                else
-                    if( ptrHero.points >= c_give_level_5 && ptrHero.size < 5 )
-                        ptrHero.size = 5;
+        if( ptrHero.points >= c_give_level_3 && ptrHero.size < 3 )
+            ptrHero.size = 3;
+        else
+        if( ptrHero.points >= c_give_level_4 && ptrHero.size < 4 )
+            ptrHero.size = 4;
+        else
+        if( ptrHero.points >= c_give_level_5 && ptrHero.size < 5 )
+            ptrHero.size = 5;
 
     } //if( !game_over )
 }
@@ -748,26 +789,26 @@ function drawScene() { // главная функция отрисовки
 // инициализация
 function Init()
 {
-	canvas = document.getElementById('scene');
+    canvas = document.getElementById('scene');
     ctx = canvas.getContext('2d');
 
     ctxHero = document.getElementById('heroCanvas').getContext('2d');
 
-	score_txt = document.getElementById('scores');
+    score_txt = document.getElementById('scores');
     prevAnchScore = 0;
     blink_count = 0;
     game_over = false;
     paused = false;
     arrRecords = [];
-	snd_click = document.getElementById("mus");
-	mainMusic = document.getElementById("main");
-	if( localStorage["sound"] == "1" )
-		mainMusic.play();
+    snd_click = document.getElementById("mus");
+    mainMusic = document.getElementById("main");
+    if( localStorage["sound"] == "1" )
+        mainMusic.play();
     overMusic = document.getElementById("over");
     overMusic.pause();
-    
-	//Hide Pause menu controls
-	document.getElementById('game_over').style.visibility='hidden';
+
+    //Hide Pause menu controls
+    document.getElementById('game_over').style.visibility='hidden';
     document.getElementById('txt_1').style.visibility='hidden';
     document.getElementById('txt_2').style.visibility='hidden';
     document.getElementById('txt_3').style.visibility='hidden';
@@ -777,15 +818,15 @@ function Init()
     document.getElementById('txt_4').style.visibility='hidden';
     document.getElementById('txt_field_name').style.visibility='hidden';
 
-	scores = 0;
+    scores = 0;
     iSprPos = 0;
     ptrHero = new Hero(100,         //X
-                       300,         //Y
-                       1,           //size
-                       1,           //speed
-                       c_hero_accel,//acceleration
-                       3,           //lifes
-                       0);          //points
+        300,         //Y
+        1,           //size
+        1,           //speed
+        c_hero_accel,//acceleration
+        3,           //lifes
+        0);          //points
 
     ptrRod = new FishRod( getRandomInt(c_rod_random_min,c_rod_random_max), -250, false, true);
     ptrRod.img.src = 'imgs/rod.png';
@@ -794,19 +835,19 @@ function Init()
     var enemieSize = 0;
     enemieSize = getRandomInt(1, ptrHero.size + 2);
     if (enemieSize > 5) enemieSize = 5;
-		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
     enemieSize = getRandomInt(1, ptrHero.size + 2);
     if (enemieSize > 5) enemieSize = 5;
-		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
     enemieSize = getRandomInt(1, ptrHero.size + 2);
     if (enemieSize > 5) enemieSize = 5;
-		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
     enemieSize = getRandomInt(1, ptrHero.size + 2);
     if (enemieSize > 5) enemieSize = 5;
-		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
     enemieSize = getRandomInt(1, ptrHero.size + 2);
     if (enemieSize > 5) enemieSize = 5;
-		ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
+    ArrEnemie.push(new Enemie(800 + getRandomInt(0,1200), getRandomInt(0,340), enemieSize, getRandomInt(c_min_speed,c_max_speed), true));
 
     ArrPlankton = [];
     ArrPlankton.push(new Plankton(800 + getRandomInt(0,1200), getRandomInt(0,300), getRandomInt(c_min_speed,c_max_speed), true));
@@ -868,73 +909,89 @@ function Init()
     back_3 = new FarBack(0);
     back_4 = new FarBack(1600);
 
+    if( localStorage.getItem("results") )
+    {
+        resultTable = JSON.parse(localStorage["results"]);
+    }
+    else
+    {
+        resultTable = new Array(
+            new Array('  ',' '),
+            new Array('  ',' '),
+            new Array('  ',' '),
+            new Array('  ',' '),
+            new Array('  ',' ')
+        );
+
+        localStorage["results"] = JSON.stringify(resultTable);
+    }
 }
 
 function ShowGameOver()
 {
-	document.getElementById('game_over').style.visibility='visible';
+    document.getElementById('game_over').style.visibility='visible';
     document.getElementById('txt_2').style.visibility='visible';
     document.getElementById('txt_3').style.visibility='visible';
     document.getElementById('txt_4').style.visibility='visible';
     document.getElementById('btn_2').style.visibility='visible';
     document.getElementById('btn_3').style.visibility='visible';
-	document.getElementById('txt_field_name').style.visibility='visible';
+    document.getElementById('txt_field_name').style.visibility='visible';
     overMusic = document.getElementById("over");
     overMusic.currentTime = 0;
-	if( localStorage["sound"] == "1" )
-		overMusic.play();
-	var time = 1;
-	$("#game_over").animate({opacity: "0"},time);
-	$("#txt_2").animate({opacity: "0"},time);
-	$("#txt_3").animate({opacity: "0"},time);
-	$("#btn_2").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
-	$("#btn_3").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
-	$("#txt_4").animate({opacity: "0"},time);
-	$("#txt_field_name").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
+    if( localStorage["sound"] == "1" )
+        overMusic.play();
+    var time = 1;
+    $("#game_over").animate({opacity: "0"},time);
+    $("#txt_2").animate({opacity: "0"},time);
+    $("#txt_3").animate({opacity: "0"},time);
+    $("#btn_2").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
+    $("#btn_3").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
+    $("#txt_4").animate({opacity: "0"},time);
+    $("#txt_field_name").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
     overMusic.currentTime = 0;
-	if( localStorage["sound"] == "1" )
-		overMusic.play();
-	time = 300;
-	$("#game_over").animate({opacity: "1"},time);
-	$("#txt_2").animate({opacity: "1"},time);
-	$("#txt_3").animate({opacity: "1"},time);
-	$("#btn_2").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
-	$("#btn_3").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
-	$("#txt_4").animate({opacity: "1"},time);
-	$("#txt_field_name").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
+    if( localStorage["sound"] == "1" )
+        overMusic.play();
+    time = 300;
+    $("#game_over").animate({opacity: "1"},time);
+    $("#txt_2").animate({opacity: "1"},time);
+    $("#txt_3").animate({opacity: "1"},time);
+    $("#btn_2").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
+    $("#btn_3").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
+    $("#txt_4").animate({opacity: "1"},time);
+    $("#txt_field_name").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
     overMusic.currentTime = 0;
-	if( localStorage["sound"] == "1" )
-		overMusic.play();
+    if( localStorage["sound"] == "1" )
+        overMusic.play();
 }
 
 function HideButtons()
 {
-	var time = 300;
-	$("#btn_1").animate({opacity: "0"},time, function(){
-		document.getElementById('btn_1').style.visibility='hidden';
-	}
-	);
-	$("#btn_2").animate({opacity: "0"},time, function(){
-		document.getElementById('btn_2').style.visibility='hidden';
-	}
-	);
-	$("#btn_3").animate({opacity: "0"},time, function(){
-		document.getElementById('btn_3').style.visibility='hidden';
-	}
-	);
-	$("#txt_1").animate({opacity: "0"},time, function(){
-		document.getElementById('txt_1').style.visibility='hidden';
-	}
-	);
-	$("#txt_2").animate({opacity: "0"},time, function(){
-		document.getElementById('txt_2').style.visibility='hidden';
-	}
-	);
-	$("#txt_3").animate({opacity: "0"},time, function(){
-		document.getElementById('txt_3').style.visibility='hidden';
-	}
-	);
-	
+    var time = 300;
+    $("#btn_1").animate({opacity: "0"},time, function(){
+            document.getElementById('btn_1').style.visibility='hidden';
+        }
+    );
+    $("#btn_2").animate({opacity: "0"},time, function(){
+            document.getElementById('btn_2').style.visibility='hidden';
+        }
+    );
+    $("#btn_3").animate({opacity: "0"},time, function(){
+            document.getElementById('btn_3').style.visibility='hidden';
+        }
+    );
+    $("#txt_1").animate({opacity: "0"},time, function(){
+            document.getElementById('txt_1').style.visibility='hidden';
+        }
+    );
+    $("#txt_2").animate({opacity: "0"},time, function(){
+            document.getElementById('txt_2').style.visibility='hidden';
+        }
+    );
+    $("#txt_3").animate({opacity: "0"},time, function(){
+            document.getElementById('txt_3').style.visibility='hidden';
+        }
+    );
+
     document.getElementById('game_over').style.visibility='hidden';
     document.getElementById('txt_4').style.visibility='hidden';
     document.getElementById('txt_field_name').style.visibility='hidden';
@@ -948,45 +1005,45 @@ function ShowButtons()
     document.getElementById('btn_1').style.visibility='visible';
     document.getElementById('btn_2').style.visibility='visible';
     document.getElementById('btn_3').style.visibility='visible';
-	
-	var time = 1;
-	$("#btn_1").animate({top: "-300px"},time);
-	$("#btn_2").animate({top: "-200px"},time);
-	$("#btn_3").animate({top: "-95px"},time);	
-	$("#txt_1").animate({top: "-307px"},time);
-	$("#txt_2").animate({top: "-208px"},time);
-	$("#txt_3").animate({top: "-86px"},time);
-	$("#btn_1").animate({opacity: "1"},time);
-	$("#btn_2").animate({opacity: "1"},time);
-	$("#btn_3").animate({opacity: "1"},time);	
-	$("#txt_1").animate({opacity: "1"},time);
-	$("#txt_2").animate({opacity: "1"},time);
-	$("#txt_3").animate({opacity: "1"},time);
 
-	time = 450;
-	$("#btn_1").animate({top: "225px"},time);
-	$("#btn_2").animate({top: "325px"},time);
-	$("#btn_3").animate({top: "430px"},time);
-	$("#txt_1").animate({top: "232px"},time);
-	$("#txt_2").animate({top: "333px"},time);
-	$("#txt_3").animate({top: "439px"},time);
-	
-	time = 300;
-	$("#btn_1").animate({top: "190px"},time);
-	$("#btn_2").animate({top: "290px"},time);
-	$("#btn_3").animate({top: "395px"},time);
-	$("#txt_1").animate({top: "197px"},time);
-	$("#txt_2").animate({top: "298px"},time);
-	$("#txt_3").animate({top: "404px"},time);
+    var time = 1;
+    $("#btn_1").animate({top: "-300px"},time);
+    $("#btn_2").animate({top: "-200px"},time);
+    $("#btn_3").animate({top: "-95px"},time);
+    $("#txt_1").animate({top: "-307px"},time);
+    $("#txt_2").animate({top: "-208px"},time);
+    $("#txt_3").animate({top: "-86px"},time);
+    $("#btn_1").animate({opacity: "1"},time);
+    $("#btn_2").animate({opacity: "1"},time);
+    $("#btn_3").animate({opacity: "1"},time);
+    $("#txt_1").animate({opacity: "1"},time);
+    $("#txt_2").animate({opacity: "1"},time);
+    $("#txt_3").animate({opacity: "1"},time);
+
+    time = 450;
+    $("#btn_1").animate({top: "225px"},time);
+    $("#btn_2").animate({top: "325px"},time);
+    $("#btn_3").animate({top: "430px"},time);
+    $("#txt_1").animate({top: "232px"},time);
+    $("#txt_2").animate({top: "333px"},time);
+    $("#txt_3").animate({top: "439px"},time);
+
+    time = 300;
+    $("#btn_1").animate({top: "190px"},time);
+    $("#btn_2").animate({top: "290px"},time);
+    $("#btn_3").animate({top: "395px"},time);
+    $("#txt_1").animate({top: "197px"},time);
+    $("#txt_2").animate({top: "298px"},time);
+    $("#txt_3").animate({top: "404px"},time);
 }
 
 function onPauseClick()
 {
     if( !game_over )
     {
-	if( localStorage["sound"] == "1" )
-		snd_click.play();
-		
+        if( localStorage["sound"] == "1" )
+            snd_click.play();
+
         mainMusic.pause();
         if( !paused )
         {
@@ -999,47 +1056,53 @@ function onPauseClick()
             HideButtons();
             paused = false;
             mainMusic.currentTime = 0;
-			if( localStorage["sound"] == "1" )
-				mainMusic.play();
+            if( localStorage["sound"] == "1" )
+                mainMusic.play();
         }
     }
 }
 
 function onResumeClick()
 {
-	if( localStorage["sound"] == "1" )
-		snd_click.play();
+    if( localStorage["sound"] == "1" )
+        snd_click.play();
     HideButtons();
     paused = false;
-	if( localStorage["sound"] == "1" )
-		mainMusic.play();
+    if( localStorage["sound"] == "1" )
+        mainMusic.play();
 }
 
 function onToMenuClick()
 {
-	if( localStorage["sound"] == "1" )
-		snd_click.play();
+    if( localStorage["sound"] == "1" )
+        snd_click.play();
+    if( game_over == true )
+    {
+        var name = document.getElementById('txt_field_name').value;
+        saveRecord( name, scores);
+    }
     setInterval('document.location.href = "index.html"', 150 );
-    var name = document.getElementById('txt_field_name').value;
-    saveRecord( name.value, scores);
-
 }
 
 function onReplayClick()
 {
-	if( localStorage["sound"] == "1" )
-		snd_click.play();
-    var name = document.getElementById('txt_field_name').value;
-    saveRecord( name, scores);
+    if( localStorage["sound"] == "1" )
+        snd_click.play();
+    if( game_over == true )
+    {
+        var name = document.getElementById('txt_field_name').value;
+        saveRecord( name, scores);
+    }
+
     mainMusic.currentTime = 0;
-	if( localStorage["sound"] == "1" )
-		mainMusic.play();
+    if( localStorage["sound"] == "1" )
+        mainMusic.play();
     Init();
 }
 
 $(function(){
-    
-	Init();
+
+    Init();
 
     $('#heroCanvas').mousedown(function(e) {
         var canvasOffset = $(canvas).offset();

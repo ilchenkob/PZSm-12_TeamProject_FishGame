@@ -1,4 +1,4 @@
-п»ї<html>
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
     <meta charset="utf-8" />
@@ -11,58 +11,56 @@
     <![endif]-->
     <script type="text/javascript" src="jquery-1.8.2.js"></script>
     <script type="text/javascript" src="game.js"></script>
-	
-	<script>
-	function href_to( arg )
-	{
-		var aud = document.getElementById('click'); 
-		if( localStorage["sound"] == "1" )
-			aud.play(); 
-		var s = 'document.location.href=' + "'" + arg + "'";
-		setInterval(s, 150 );
-	}
-	</script>
-	
+
+    <script>
+        function href_to( arg )
+        {
+            var aud = document.getElementById('click');
+            if( localStorage["sound"] == "1" )
+                aud.play();
+            var s = 'document.location.href=' + "'" + arg + "'";
+            setInterval(s, 150 );
+        }
+
+        function loaded()
+        {
+            var resultTable;
+
+            if( localStorage.getItem("results") )
+            {
+                resultTable = JSON.parse(localStorage["results"]);
+            }
+            else
+            {
+                resultTable = new Array(
+                        new Array('  ','  '),
+                        new Array('  ','  '),
+                        new Array('  ','  '),
+                        new Array('  ','  '),
+                        new Array('  ','  ')
+                );
+
+                localStorage["results"] = JSON.stringify(resultTable);
+            }
+            for(i=0; i<5; i++)
+            {
+                $('#resTable').append('<tr><td>'+ resultTable[i][0] +'</td><td>'+ resultTable[i][1] +'</td></tr>');
+            }
+        }
+    </script>
+
 </head>
 
-<body>
+<body onLoad="loaded()">
 <CENTER>
-    <table>
-        <TABLE cellSpacing=1 cellPadding=8>
-            <caption align="top"><b></b>
-            </caption>
-            <TBODY>
-            <TR align=middle>
-                <TH>РќРѕРјРµСЂ</TH>
-                <TH>РРіСЂРѕРє</TH>
-                <TH>РћС‡РєРё</TH></TR>
-            <TR align=middle>
-                <TD> </TD>
-                <TD> </TD>
-                <TD> </TD></TR>
-            <TR align=middle>
-                <TD> </TD>
-                <TD> </TD>
-                <TD> </TD></TR>
-            <TR align=middle>
-                <TD> </TD>
-                <TD> </TD>
-                <TD> </TD></TR>
-            <TR align=middle>
-                <TD> </TD>
-                <TD> </TD>
-                <TD> </TD></TR>
-            <TR align=middle>
-                <TD> </TD>
-                <TD> </TD>
-                <TD> </TD></TR></TBODY>
-        </TABLE>
+    <table id="resTable" border="1" cellSpacing=1 cellPadding=8>
+    </table>
 </CENTER>
 
 <audio id="click" src="music/but.mp3" preload></audio>
 
-<a class="button2" href="#">РљРќРћРџРљРђ</a>
-<h class="text4" href="#">РўР°Р±Р»РёС†Р° СЂРµРєРѕСЂРґРѕРІ</h>
+<a class="button2" href="#">КНОПКА</a>
+<h class="text4" href="#">Таблица рекордов</h>
 <a class="button2" id="btn_2" target="_self" onclick="href_to('index.html')">Button</a>
 </body>
 </html>
