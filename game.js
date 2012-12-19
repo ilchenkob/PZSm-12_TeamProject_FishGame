@@ -168,6 +168,7 @@ function drawHero( x, y )   //определяет нужную текстуру
     }
 }
 
+
 function DrawAnchor( imageObj )  //рисует текстуру якоря
 {
     ctx.drawImage(imageObj,anch.x, anch.y);
@@ -190,7 +191,6 @@ function DrawEnemieFish( imageObj, num )  //рисует текстуру вра
 function DrawPlanktonFish( imageObj, num )  //рисует текстуру самого мелкого врага на канвасе
 {
     return;
-    //ctx.drawImage(imageObj, 50 * iSprPos, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
     ctx.drawImage(imageObj, 0, 0, 50, 50, ArrPlankton[num].x, ArrPlankton[num].y, 50, 50);
 }
 
@@ -659,7 +659,6 @@ function drawScene() { // главная функция отрисовки
     if( !game_over )
     {
         clear(); // очистить canvas
-
         animateSprite();
         drawBack();
 
@@ -791,7 +790,6 @@ function Init()
 {
     canvas = document.getElementById('scene');
     ctx = canvas.getContext('2d');
-
     ctxHero = document.getElementById('heroCanvas').getContext('2d');
 
     score_txt = document.getElementById('scores');

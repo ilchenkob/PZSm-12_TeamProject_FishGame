@@ -224,4 +224,44 @@ describe("Game", function() {
 
 
     });
+    it ("Angry should move", function() {
+        ptrHero.size = 2;
+        angry.isActive = true;
+
+        drawScene();
+        drawScene();
+        expect(angry.x).toBeGreaterThan(-230);
+
+    });
+
+    it ("To finish the game in case of death", function (){
+        game_over = false;
+        ptrHero.life_count = 0;
+        drawScene();
+        expect(game_over).toBeTruthy();
+
+    });
+
+    it ("To blink", function (){
+        blink_count = 3;
+        drawScene();
+        expect(anch.start).toBeLessThan(3);
+
+    });
+
+
+    it ("To change sprite", function (){
+        iSprPos = 2;
+        drawScene();
+        expect(iSprPos).toBeGreaterThan(2);
+
+    });
+
+    it ("To go to the first sprite", function (){
+        iSprPos = 4;
+        drawScene();
+        expect(iSprPos).toBe(0);
+
+    });
+
 });
