@@ -46,6 +46,8 @@ var backImg_2;
 //==============================================================
 
 //======================== constants ===========================
+var c_screen_height = $(document).height() / 480;
+
 var c_min_speed  = 4;
 var c_max_speed  = 8;
 var c_min_size   = 1;
@@ -807,9 +809,6 @@ function Init()
 
     //Hide Pause menu controls
     document.getElementById('game_over').style.visibility='hidden';
-    document.getElementById('txt_1').style.visibility='hidden';
-    document.getElementById('txt_2').style.visibility='hidden';
-    document.getElementById('txt_3').style.visibility='hidden';
     document.getElementById('btn_1').style.visibility='hidden';
     document.getElementById('btn_2').style.visibility='hidden';
     document.getElementById('btn_3').style.visibility='hidden';
@@ -927,9 +926,17 @@ function Init()
 
 function ShowGameOver()
 {
+	var time = 1;
+	var top = 0;
+	
+	top = 190 * c_screen_height;
+    $("#btn_1").animate({top: top + "px"},time);
+	top = 290 * c_screen_height;
+    $("#btn_2").animate({top: top + "px"},time);
+	top = 395 * c_screen_height;
+    $("#btn_3").animate({top: top + "px"},time);
+	
     document.getElementById('game_over').style.visibility='visible';
-    document.getElementById('txt_2').style.visibility='visible';
-    document.getElementById('txt_3').style.visibility='visible';
     document.getElementById('txt_4').style.visibility='visible';
     document.getElementById('btn_2').style.visibility='visible';
     document.getElementById('btn_3').style.visibility='visible';
@@ -938,10 +945,8 @@ function ShowGameOver()
     overMusic.currentTime = 0;
     if( localStorage["sound"] == "1" )
         overMusic.play();
-    var time = 1;
+    time = 1;
     $("#game_over").animate({opacity: "0"},time);
-    $("#txt_2").animate({opacity: "0"},time);
-    $("#txt_3").animate({opacity: "0"},time);
     $("#btn_2").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
     $("#btn_3").animate({opacity: "0", width: "-=20px", height: "-=20px", left: "+=10px", top: "+=10px"},time);
     $("#txt_4").animate({opacity: "0"},time);
@@ -951,8 +956,6 @@ function ShowGameOver()
         overMusic.play();
     time = 300;
     $("#game_over").animate({opacity: "1"},time);
-    $("#txt_2").animate({opacity: "1"},time);
-    $("#txt_3").animate({opacity: "1"},time);
     $("#btn_2").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
     $("#btn_3").animate({opacity: "1", width: "+=20px", height: "+=20px", left: "-=10px", top: "-=10px"},time);
     $("#txt_4").animate({opacity: "1"},time);
@@ -977,18 +980,6 @@ function HideButtons()
             document.getElementById('btn_3').style.visibility='hidden';
         }
     );
-    $("#txt_1").animate({opacity: "0"},time, function(){
-            document.getElementById('txt_1').style.visibility='hidden';
-        }
-    );
-    $("#txt_2").animate({opacity: "0"},time, function(){
-            document.getElementById('txt_2').style.visibility='hidden';
-        }
-    );
-    $("#txt_3").animate({opacity: "0"},time, function(){
-            document.getElementById('txt_3').style.visibility='hidden';
-        }
-    );
 
     document.getElementById('game_over').style.visibility='hidden';
     document.getElementById('txt_4').style.visibility='hidden';
@@ -997,42 +988,39 @@ function HideButtons()
 
 function ShowButtons()
 {
-    document.getElementById('txt_1').style.visibility='visible';
-    document.getElementById('txt_2').style.visibility='visible';
-    document.getElementById('txt_3').style.visibility='visible';
     document.getElementById('btn_1').style.visibility='visible';
     document.getElementById('btn_2').style.visibility='visible';
     document.getElementById('btn_3').style.visibility='visible';
 
     var time = 1;
-    $("#btn_1").animate({top: "-300px"},time);
-    $("#btn_2").animate({top: "-200px"},time);
-    $("#btn_3").animate({top: "-95px"},time);
-    $("#txt_1").animate({top: "-307px"},time);
-    $("#txt_2").animate({top: "-208px"},time);
-    $("#txt_3").animate({top: "-86px"},time);
+	var top = 0;
+	
+	top = -300 * c_screen_height;
+    $("#btn_1").animate({top: top + "px"},time);
+	top = -200 * c_screen_height;
+    $("#btn_2").animate({top: top + "px"},time);
+	top = -95 * c_screen_height;
+	$("#btn_3").animate({top: top + "px"},time);
+	
     $("#btn_1").animate({opacity: "1"},time);
     $("#btn_2").animate({opacity: "1"},time);
     $("#btn_3").animate({opacity: "1"},time);
-    $("#txt_1").animate({opacity: "1"},time);
-    $("#txt_2").animate({opacity: "1"},time);
-    $("#txt_3").animate({opacity: "1"},time);
 
     time = 450;
-    $("#btn_1").animate({top: "225px"},time);
-    $("#btn_2").animate({top: "325px"},time);
-    $("#btn_3").animate({top: "430px"},time);
-    $("#txt_1").animate({top: "232px"},time);
-    $("#txt_2").animate({top: "333px"},time);
-    $("#txt_3").animate({top: "439px"},time);
-
+	top = 225 * c_screen_height;
+    $("#btn_1").animate({top: top + "px"},time);
+	top = 325 * c_screen_height;
+    $("#btn_2").animate({top: top + "px"},time);
+	top = 430 * c_screen_height;
+    $("#btn_3").animate({top: top + "px"},time);
+   
     time = 300;
-    $("#btn_1").animate({top: "190px"},time);
-    $("#btn_2").animate({top: "290px"},time);
-    $("#btn_3").animate({top: "395px"},time);
-    $("#txt_1").animate({top: "197px"},time);
-    $("#txt_2").animate({top: "298px"},time);
-    $("#txt_3").animate({top: "404px"},time);
+	top = 190 * c_screen_height;
+    $("#btn_1").animate({top: top + "px"},time);
+	top = 290 * c_screen_height;
+    $("#btn_2").animate({top: top + "px"},time);
+	top = 395 * c_screen_height;
+    $("#btn_3").animate({top: top + "px"},time);
 }
 
 function onPauseClick()
@@ -1091,6 +1079,16 @@ function onReplayClick()
         var name = document.getElementById('txt_field_name').value;
         saveRecord( name, scores);
     }
+	
+	var time = 1;
+	var top = 0;
+	
+	top = -300 * c_screen_height;
+    $("#btn_1").animate({top: top + "px"},time);
+	top = -200 * c_screen_height;
+    $("#btn_2").animate({top: top + "px"},time);
+	top = -95 * c_screen_height;
+    $("#btn_3").animate({top: top + "px"},time);
 
     mainMusic.currentTime = 0;
     if( localStorage["sound"] == "1" )
@@ -1101,7 +1099,7 @@ function onReplayClick()
 $(function(){
 
     Init();
-
+	
     $('#heroCanvas').mousedown(function(e) {
         var canvasOffset = $(canvas).offset();
         var mouseX = Math.floor(e.pageX - canvasOffset.left);

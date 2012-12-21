@@ -9,42 +9,39 @@
 
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <script type="text/javascript" src="jquery-1.8.2.js"></script>
-    <script type="text/javascript" src="game.js"></script>
+    <![endif]-->    
 </head>
 
 <body>
-<table border="0" bgcolor="#0e477b">
-	<tr height="30" align="middle">
-		<td width="300" id="lifes">Our lifes</td>
-		<td width="200">
-			<a class="button" href='#' target="_self">Pause</a>
+<table width="100%" height="100%" border="0" bgcolor="#0e477b">
+	<tr align="middle">
+		<td height="6.25%" width="33.333%" id="lifes">Our lifes</td>
+		<td height="6.25%" width="33.333%">
+		<div align="middle">
 			<a href='#' class="text" onclick="onPauseClick()">P a u s e</a>
+		</div>
 		</td>
-		<td width="300" id="scores">: 0</td>
+		<td height="6.25%" width="33.333%" id="scores">: 0</td>
 	</tr>
 	<tr>
 		<td colspan="3">
-            <canvas id="scene" width="800" height="450" ></canvas>
-            <canvas id="heroCanvas" width="800" height="450"></canvas>
-			<h class="btn_text1" id="txt_1">Продолжить</h>
-			<h class="btn_text2" id="txt_2">Начать заново</h>
-			<h class="btn_text3" id="txt_3">Главное меню</h>
-            <h class="g_o" id="game_over">GAME OVER</h>
-			<h class="txt_name" id="txt_4">Ваше имя</h>
+            <canvas id="scene" width="800px" height="450px"></canvas>
+            <canvas id="heroCanvas" width="800px" height="450px"></canvas>
+
+            
+			<img class="txt_name" id="txt_4" src="imgs/name.png"></img>
 			<input type="text" name="PlayerName" class="text_field" id="txt_field_name"></input>
 			<a class="button1" id="btn_1" href='#' target="_self" onclick="onResumeClick()">Button</a>
 			<a class="button2" id="btn_2" href='#' target="_self" onclick="onReplayClick()">Button</a>
 			<a class="button3" id="btn_3" href='#' target="_self" onclick="onToMenuClick()">Button</a>
-		
+			<img class="g_o" id="game_over" src="imgs/game_over.png"></img>
+			
 		</td>
 	</tr>
 </table>
 
 <audio  id="mus">
     <source src="music/but.mp3"/>
-    Your browser doesn`t support audio tags!
 </audio>
 
 <audio id="main" loop >
@@ -82,5 +79,7 @@
     <source src="music/coll2.ogg" type="audio/ogg"/>
 </audio>
 
+	<script type="text/javascript" src="jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="game.js"></script>
 </body>
 </html>
