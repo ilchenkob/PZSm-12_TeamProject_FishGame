@@ -112,14 +112,15 @@ a.button3 {
 	text-decoration: none;
 	text-align: center;
 	position: absolute; 
-	text-indent:-999em; /*убираем текстовую ссылку*/
-	background:url(imgs/pause.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
+	text-indent:-999em; 
+	background:url(imgs/pause.png) 0 0 no-repeat;
 	background-size: 100% 100%;
 	top: 0%;
 	
-	height: 6.25%;
+	height: 4.25%;
+	width: 23%;
 	
-	text-shadow: #ddd 1px 0 0px, #ddd 0 1px 0px, #ddd -1px 0 0px, #ddd 0 -1px 0px;
+	margin: 1% 5% 1% 5%;
 } 
 .text {color: #01587d;}
 

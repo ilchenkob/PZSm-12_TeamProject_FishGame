@@ -1,0 +1,83 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+    <meta charset="utf-8" />
+    <title>Tutorial</title>
+
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="jquery-1.8.2.js"></script>
+	
+	<img class="tut_img" id="img_1" src="imgs/tutorial/1.jpg"></img>
+	<img class="tut_img" id="img_2" src="imgs/tutorial/2.jpg"></img>
+	<img class="tut_img" id="img_3" src="imgs/tutorial/3.jpg"></img>
+
+	<audio id="click" src="music/but.mp3" preload></audio>
+	<a class="button2" id="btn_2" target="_self" onclick="href_to('index.html')">Button back</a>
+	<a class="button5" id="to_menu" target="_self" onclick="href_to('index.html')">Button to menu</a>
+	<a class="button4" id="next_slide" target="_self" onclick="next_slide()">Button next</a>
+	
+	
+</head>
+
+<body scroll="no">	
+	
+	<script>	
+		var this_slide;
+		var time;
+		
+        function href_to( arg )
+        {
+            var aud = document.getElementById('click');
+            if( localStorage["sound"] == "1" )
+                aud.play();
+            var s = 'document.location.href=' + "'" + arg + "'";
+            setInterval(s, 150 );
+        }
+
+        function loaded()
+        {
+		}
+		
+		$(function(){
+			this_slide = 1;
+			
+			document.getElementById('to_menu').style.visibility='hidden';
+			$("#to_menu").animate({opacity: "0"},1);
+			time = 1;
+			$("#img_1").animate({left: "0%", width: "100%"},time);
+			$("#img_2").animate({left: "100%", width: "100%"},time);
+			$("#img_3").animate({left: "100%", width: "100%"},time);
+        });
+		
+		function next_slide()
+		{
+			time = 600;
+			switch( this_slide)
+			{
+				case 1:
+					$("#img_1").animate({left: "-100%"},time);
+					$("#img_2").animate({left: "0%"},time);
+					break;
+				case 2:
+					$("#img_2").animate({left: "-100%"},time);			
+					$("#img_3").animate({left: "0%"},time);
+					break;
+				case 3:
+					$("#img_3").animate({left: "-100%"},time);					
+					$("#to_menu").animate({opacity: "1"},time*1.5);
+					$("#btn_2").animate({opacity: "0"},time);
+					$("#next_slide").animate({opacity: "0"},time);
+					//document.getElementById('btn_2').style.visibility='hidden';
+					//document.getElementById('next_slide').style.visibility='hidden';
+					document.getElementById('to_menu').style.visibility='visible';
+					break;
+			}
+			this_slide++;
+		}
+    </script>
+</body>
+</html>

@@ -65,10 +65,10 @@ var c_rod_random_min = 700;
 var c_rod_random_max = 900;
 
 //количество игровых очков для роста героя
-var c_give_level_2 = 90;
-var c_give_level_3 = 150;
-var c_give_level_4 = 250;
-var c_give_level_5 = 400;
+var c_give_level_2 = 300;
+var c_give_level_3 = 600;
+var c_give_level_4 = 1000;
+var c_give_level_5 = 1800;
 //==============================================================
 
 // -------------------------------------------------------------

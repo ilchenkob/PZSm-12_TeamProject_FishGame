@@ -46,7 +46,18 @@ a.button {
 a.button1 {
 	background:url(imgs/rec.png) 0 0 no-repeat; /*���������� ����������� � no-repeat - �� �����������*/
 	background-size: 100% 100%;
-	top: 63.541%;
+	top: 58.541%;
+	text-indent:-999em; /*������� ��������� ������*/
+	
+	box-shadow:
+	inset #016590 0 0 6px 1px,
+	#016590 0 0 24px 15px;
+}
+
+a.button3 {
+	background:url(imgs/tutorial.png) 0 0 no-repeat; /*���������� ����������� � no-repeat - �� �����������*/
+	background-size: 100% 100%;
+	top: 75.541%;
 	text-indent:-999em; /*������� ��������� ������*/
 	
 	box-shadow:
@@ -125,7 +136,7 @@ table {
 
 }
 td, th {
-background-color:#478CFB;  
+background-color:#016590;  
 color:#fff;       
 text-align: center; 
 vertical-align: middle;
@@ -144,6 +155,35 @@ a.button2 {
 	top: 6%;
 	text-indent:-999em; /*������� ��������� ������*/
 }
+
+a.button4 {
+	display:block; /*����*/
+	width:72px; /*������*/
+	height:72px; /*������*/
+	background:url(imgs/next.png) 0 0 no-repeat; /*���������� ����������� � no-repeat - �� �����������*/  
+	background-size: 100% 100%;
+	display:block;    /* ������ ������ ������ */
+	position: absolute; 
+	left: 85%; 
+	top: 80%;
+	text-indent:-9999em; /*������� ��������� ������*/
+}
+
+a.button5 {
+	background:url(imgs/to_menu.png) 0 0 no-repeat; /*подключаем изображения и no-repeat - не повторяться*/
+	background-size: 100% 100%;
+	top: 40%;
+	left: 33%;
+	text-indent:-999em; /*убираем текстовую ссылку*/
+	
+	width:36%;
+	height:10%;
+	
+	box-shadow:
+	inset #016590 0 0 6px 1px,
+	#016590 0 0 24px 15px;
+}
+
 h.text4 {
         font-size: 6.25%;
 	line-height: 33.33333%;
@@ -180,3 +220,13 @@ label {
 }
 
 .text4 {color: #00008B;}
+
+html { overflow:  hidden; }
+
+img.tut_img{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 0%;
+	height: 100%;
+}
