@@ -136,7 +136,16 @@ describe("Game", function() {
 	
 	expect(ptrHero.y).toBeLessThan(200);
   });
-  
+    it("Hero must up", function() {
+	
+	ptrHero.y = 200;
+	touched = false;	
+	
+	drawScene();
+	drawScene();	
+	
+	expect(ptrHero.y).toBeLessThan(200);
+  });
   it("Points should grow", function() {
 	
 	scores = 100;
@@ -263,5 +272,12 @@ describe("Game", function() {
         expect(iSprPos).toBe(0);
 
     });
+   it("Fish should be 4-th size in the end", function() {
+        ptrHero.points = 0;
+        drawScene();
+        drawScene();
+        expect(ptrHero.size).toBe(4);
 
+
+    });
 });
