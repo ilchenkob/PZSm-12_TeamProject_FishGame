@@ -24,7 +24,7 @@ var rodMusic;
 var collMusic;
 var coll1Music;
 var ancMusic;
-var coll2Music;
+//var coll2Music;
 
 var resultTable;
 
@@ -357,7 +357,7 @@ function bonusCollisions()
 
 function angryCollisions()
 {
-    coll2Music = document.getElementById("coll2");
+    coll1Music = document.getElementById("coll1");
     if( angry.x < 450 && angry.isActive == false )
         return;
 
@@ -375,7 +375,6 @@ function angryCollisions()
             {
                 ptrHero.life_count--;
                 blink_count = c_blink_count;
-coll2Music.play();
             }
             else
             {
@@ -403,7 +402,7 @@ coll2Music.play();
             angry.isActive = false;
             angry.x = -300;
             if( localStorage["sound"] == "1" )
-                coll2Music.play();
+                coll1Music.play();
         }
     }
 }
@@ -1101,20 +1100,25 @@ $(function(){
 
     Init();
 	
-    $('#heroCanvas').mousedown(function(e) {
-        var canvasOffset = $(canvas).offset();
-        var mouseX = Math.floor(e.pageX - canvasOffset.left);
-        oldMouseY = Math.floor(e.pageY - canvasOffset.top);
+	document.body.addEventListener('touchstart',function(e) {
+	    touched = true;
+	});
+	  
+	document.body.addEventListener('touchend',function(e) {
+        ptrHero.accel = c_hero_accel;
+        touched = false;
+	});
+	
+	$('#heroCanvas').mousedown(function(e) {
         touched = true;
-
     });
 
     $('#heroCanvas').mouseup(function(e)
     {
-        oldMouseY = 0;
         ptrHero.accel = c_hero_accel;
         touched = false;
     });
+	
 
     setInterval(drawScene, 41);
 });
