@@ -191,14 +191,23 @@ describe("Game", function() {
 
         expect(ptrHero.life_count).toBeGreaterThan(0);
     });
+     it("bad fish should die our fish ", function() {
 
-    it("Fish should die", function() {
-
-        ptrHero.life_count = 0;
+        ptrHero.life_count = 3;
+        angry.isActive = true;
 
         drawScene();
+        drawScene();
 
-        expect(game_over).toEqual(true);
+        expect(ptrHero.life_count).
+        expect(game_over).toEqual(2);
+    });
+
+    it("Fish should have 3 lifes in the start", function() {
+
+        ptrHero.points = 0;
+        drawScene();
+        expect(ptrHero.life_count).toEqual(3);
     });
 
     it("Fish should be small in the early", function() {
@@ -263,5 +272,12 @@ describe("Game", function() {
         expect(iSprPos).toBe(0);
 
     });
+   it("Fish should be 4-th size in the end", function() {
+        ptrHero.points = 4;
+        drawScene();
+        drawScene();
+        expect(ptrHero.size).toBe(4);
 
+
+    });
 });
