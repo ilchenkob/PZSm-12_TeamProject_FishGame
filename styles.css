@@ -64,15 +64,7 @@ a.button3 {
 	inset #016590 0 0 6px 1px,
 	#016590 0 0 24px 15px;
 }
-#button_p:hover {
-/*здвиг вниз*/
-  margin-top: 3px;
-  /*Тень*/
-  -webkit-box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.8);
-  -moz-box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.8);
-  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.8);
-  
-}
+
 #logo{
 	width: 50%;
 	
